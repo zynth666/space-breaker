@@ -1,0 +1,39 @@
+{
+  "name": "space-breaker",
+  "version": "1.0.0",
+  "description": "Projekt fuer das Modul 3D-Modellierung im WiSe 2022",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --watch",
+    "serve": "webpack serve --open",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zynth666/space-breaker.git"
+  },
+  "keywords": [
+    "game",
+    "modelling",
+    "animation",
+    "three"
+  ],
+  "author": "Dennis Eisenfeld",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zynth666/space-breaker/issues"
+  },
+  "homepage": "https://github.com/zynth666/space-breaker#readme",
+  "devDependencies": {
+    "@types/three": "^0.144.0",
+    "html-webpack-plugin": "^5.5.0",
+    "ts-loader": "^9.4.1",
+    "typescript": "^4.8.4",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.1"
+  },
+  "dependencies": {
+    "three": "^0.145.0"
+  }
+}
