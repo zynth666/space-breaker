@@ -1,5 +1,7 @@
 import * as THREE from "three";
-import Engine from "./Engine/Engine";
+import Engine from "./engine/Engine";
+import "./assets/sass/styles.scss";
+
 const canvas = document.querySelector('#canvas');
 const renderer = new THREE.WebGLRenderer({ canvas });
 
@@ -44,7 +46,13 @@ function makeInstance(geometry: THREE.BoxGeometry, color: number, x: number) {
 }
 
 function render(time: number) {
-    time *= 0.001;  // convert time to seconds
+    time *= 0.001;
+
+    if (resizeRendererToDisplaySize(renderer)) {
+        const canvas = renderer.domElement;
+        camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        camera.updateProjectionMatrix();
+    }
 
     cubes.forEach((cube, ndx) => {
         const speed = 1 + ndx * .1;
@@ -53,7 +61,21 @@ function render(time: number) {
         cube.rotation.y = rot;
     });
 
+
     renderer.render(scene, camera);
 
     requestAnimationFrame(render);
+}
+
+function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer) {
+    const canvas = renderer.domElement;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    const needResize = canvas.width !== width || canvas.height !== height;
+
+    if (needResize) {
+        renderer.setSize(width, height, false);
+    }
+
+    return needResize;
 }

@@ -1,7 +1,7 @@
 {
   "name": "space-breaker",
   "version": "1.0.0",
-  "description": "Projekt fuer das Modul 3D-Modellierung im WiSe 2022",
+  "description": "An Atari Breakout like game for the web",
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -27,9 +27,11 @@
   "homepage": "https://github.com/zynth666/space-breaker#readme",
   "devDependencies": {
     "@types/three": "^0.144.0",
+    "css-loader": "^6.7.1",
     "html-webpack-plugin": "^5.5.0",
     "sass": "^1.55.0",
     "sass-loader": "^13.1.0",
+    "style-loader": "^3.3.1",
     "ts-loader": "^9.4.1",
     "typescript": "^4.8.4",
     "webpack-cli": "^4.10.0",
