@@ -1,5 +1,5 @@
-import Engine from "../Engine/Engine"
-import { Entity } from "../Entity/types"
+import Engine from "../engine/Engine"
+import { Entity } from "../entity/types"
 
 export default abstract class System {
     public abstract requiredComponents: Set<Function>

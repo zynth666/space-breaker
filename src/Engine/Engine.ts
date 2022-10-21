@@ -1,6 +1,6 @@
-import ComponentContainer from "../Component/ComponentContainer";
-import { Entity } from "../Entity/types";
-import System from "../System/System";
+import ComponentContainer from "../component/ComponentContainer";
+import { Entity } from "../entity/types";
+import System from "../system/System";
 
 export default class Engine {
     private entities = new Map<Entity, ComponentContainer>()
@@ -64,7 +64,7 @@ export default class Engine {
     private destroyEntity(entity: Entity): void {
         this.entities.delete(entity);
         for (let entities of this.systems.values()) {
-            entities.delete(entity);  // no-op if doesn't have it
+            entities.delete(entity);
         }
     }
 
