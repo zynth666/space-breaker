@@ -37,6 +37,9 @@ module.exports = {
         }),
     ],
     resolve: {
+        fallback: {
+            "fs": false
+        },
         extensions: ['.tsx', '.ts', '.js'],
         alias: {
             '@': path.resolve(__dirname, 'src')
