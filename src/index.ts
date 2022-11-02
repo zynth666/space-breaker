@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Ammo from 'ammojs-typed';
 import "./assets/sass/styles.scss";
 
@@ -9,6 +10,7 @@ let camera: THREE.PerspectiveCamera;
 let renderer: THREE.WebGLRenderer;
 let rigidBodies: THREE.Mesh[] = [];
 let tmpTrans: any;
+let colGroupPlane = 1, colGroupRedBall = 2, colGroupGreenBall = 4
 
 Ammo(Ammo).then(() => {
     tmpTrans = new Ammo.btTransform();
@@ -16,6 +18,8 @@ Ammo(Ammo).then(() => {
     setupGraphics();
     createBall();
     createBlock();
+    createMaskBall();
+
     renderFrame();
 });
 
@@ -50,6 +54,8 @@ function setupGraphics() {
     camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.2, 5000);
     camera.position.set(0, 30, 70);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+    const controls = new OrbitControls(camera, renderer.domElement);
 
     //Add hemisphere light
     let hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.1);
@@ -147,7 +153,7 @@ function createBlock() {
     let body = new Ammo.btRigidBody(rbInfo);
 
 
-    physicsWorld.addRigidBody(body);
+    physicsWorld.addRigidBody(body, colGroupPlane, colGroupRedBall);
 }
 
 
@@ -186,7 +192,48 @@ function createBall() {
     let body = new Ammo.btRigidBody(rbInfo);
 
 
-    physicsWorld.addRigidBody(body);
+    physicsWorld.addRigidBody(body, colGroupRedBall, colGroupPlane | colGroupGreenBall);
+
+    ball.userData.physicsBody = body;
+    rigidBodies.push(ball);
+}
+
+function createMaskBall() {
+
+    let pos = { x: 1, y: 30, z: 0 };
+    let radius = 2;
+    let quat = { x: 0, y: 0, z: 0, w: 1 };
+    let mass = 1;
+
+    //threeJS Section
+    let ball = new THREE.Mesh(new THREE.SphereGeometry(radius), new THREE.MeshPhongMaterial({ color: 0x00ff08 }));
+
+    ball.position.set(pos.x, pos.y, pos.z);
+
+    ball.castShadow = true;
+    ball.receiveShadow = true;
+
+    scene.add(ball);
+
+
+    //Ammojs Section
+    let transform = new Ammo.btTransform();
+    transform.setIdentity();
+    transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z));
+    transform.setRotation(new Ammo.btQuaternion(quat.x, quat.y, quat.z, quat.w));
+    let motionState = new Ammo.btDefaultMotionState(transform);
+
+    let colShape = new Ammo.btSphereShape(radius);
+    colShape.setMargin(0.05);
+
+    let localInertia = new Ammo.btVector3(0, 0, 0);
+    colShape.calculateLocalInertia(mass, localInertia);
+
+    let rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, colShape, localInertia);
+    let body = new Ammo.btRigidBody(rbInfo);
+
+
+    physicsWorld.addRigidBody(body, colGroupGreenBall, colGroupRedBall);
 
     ball.userData.physicsBody = body;
     rigidBodies.push(ball);
