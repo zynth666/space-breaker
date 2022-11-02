@@ -1,3 +1,4 @@
+import Component from "../component/Component";
 import ComponentContainer from "../component/ComponentContainer";
 import { Entity } from "../entity/types";
 import System from "../system/System";
