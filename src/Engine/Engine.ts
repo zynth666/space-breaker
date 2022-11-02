@@ -43,12 +43,16 @@ export default class Engine {
             return;
         }
 
-        system.ecs = this;
+        system.engine = this;
 
         this.systems.set(system, new Set());
         for (let entity of this.entities.keys()) {
             this.checkES(entity, system);
         }
+    }
+
+    public removeSystem(system: System): void {
+        this.systems.delete(system);
     }
 
     public update(): void {

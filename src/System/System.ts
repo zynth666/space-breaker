@@ -4,5 +4,5 @@ import { Entity } from "../entity/types"
 export default abstract class System {
     public abstract requiredComponents: Set<Function>
     public abstract update(entities: Set<Entity>): void
-    public ecs: Engine
+    public engine: Engine
 }
