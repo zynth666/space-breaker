@@ -1,3 +1,4 @@
+import Component from "./Component";
 import { ComponentClass } from "./types";
 
 export default class ComponentContainer {

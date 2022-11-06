@@ -12,13 +12,13 @@ export default class Renderer extends System {
             const entityContainer = this.engine.getComponents(entity);
 
             const rendererComponent = entityContainer.get(RendererComponent)
-            const renderer = rendererComponent.renderer;
+            const renderer = rendererComponent.three;
 
             const cameraComponent = entityContainer.get(Camera)
-            const camera = cameraComponent.camera;
+            const camera = cameraComponent.three;
 
             const sceneComponent = entityContainer.get(Scene)
-            const scene = sceneComponent.scene;
+            const scene = sceneComponent.three;
 
             if (this.resizeRendererToDisplaySize(renderer)) {
                 const canvas = renderer.domElement;

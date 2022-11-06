@@ -7,6 +7,7 @@ import Renderer from "./system/Renderer";
 import RendererComponent from "./component/Renderer";
 import Scene from "./component/Scene";
 import Camera from "./component/Camera";
+import Mesh from "./component/Mesh";
 
 const engine = new Engine();
 
@@ -30,19 +31,19 @@ function init() {
 
     engine.addSystem(renderer);
 
-    new OrbitControls(cameraComponent.camera, rendererComponent.renderer.domElement);
+    new OrbitControls(cameraComponent.three, rendererComponent.three.domElement);
 
     let hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.1);
     hemiLight.color.setHSL(0.6, 0.6, 0.6);
     hemiLight.groundColor.setHSL(0.1, 1, 0.4);
     hemiLight.position.set(0, 50, 0);
-    sceneComponent.scene.add(hemiLight);
+    sceneComponent.three.add(hemiLight);
 
     let dirLight = new THREE.DirectionalLight(0xffffff, 1);
     dirLight.color.setHSL(0.1, 1, 0.95);
     dirLight.position.set(-1, 1.75, 1);
     dirLight.position.multiplyScalar(100);
-    sceneComponent.scene.add(dirLight);
+    sceneComponent.three.add(dirLight);
 
     dirLight.castShadow = true;
 
@@ -61,9 +62,9 @@ function init() {
     const cubeSize = 4;
     const cubeGeo = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
     const cubeMat = new THREE.MeshPhongMaterial({ color: '#8AC' });
-    const mesh = new THREE.Mesh(cubeGeo, cubeMat);
-    mesh.position.set(cubeSize + 1, cubeSize / 2, 0);
-    sceneComponent.scene.add(mesh);
+    const mesh = new Mesh(cubeGeo, cubeMat);
+    mesh.three.position.set(cubeSize + 1, cubeSize / 2, 0);
+    sceneComponent.three.add(mesh.three);
 }
 
 function renderFrame() {

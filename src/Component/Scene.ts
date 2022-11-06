@@ -1,10 +1,10 @@
 import Component from "./Component";
 
 export default class Scene extends Component {
-    scene: THREE.Scene;
+    three: THREE.Scene;
 
     constructor(scene: THREE.Scene) {
         super();
-        this.scene = scene
+        this.three = scene
     }
 }

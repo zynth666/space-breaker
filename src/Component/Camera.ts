@@ -1,10 +1,10 @@
 import Component from "./Component";
 
 export default class Camera extends Component {
-    camera: THREE.PerspectiveCamera;
+    three: THREE.PerspectiveCamera;
 
     constructor(camera: THREE.PerspectiveCamera) {
         super();
-        this.camera = camera
+        this.three = camera
     }
 }
