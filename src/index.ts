@@ -8,6 +8,9 @@ import RendererComponent from "./component/Renderer";
 import Scene from "./component/Scene";
 import Camera from "./component/Camera";
 import Mesh from "./component/Mesh";
+import SceneInitializer from "./init/SceneInitializer";
+import RendererInitializer from "./init/RendererInitializer";
+import CameraInitializer from "./init/CameraInitializer";
 
 const engine = new Engine();
 
@@ -21,9 +24,9 @@ function init() {
 
     const renderEntity = engine.addEntity();
 
-    const rendererComponent = setupWebGlRenderer();
-    const sceneComponent = setupThreeScene();
-    const cameraComponent = setupPerspectiveCamera();
+    const rendererComponent = RendererInitializer.create(RendererComponent)
+    const sceneComponent = SceneInitializer.create(Scene);
+    const cameraComponent = CameraInitializer.create(Camera);
 
     engine.addComponent(renderEntity, rendererComponent);
     engine.addComponent(renderEntity, sceneComponent);
@@ -70,26 +73,4 @@ function init() {
 function renderFrame() {
     engine.update();
     requestAnimationFrame(renderFrame);
-}
-
-function setupWebGlRenderer(): RendererComponent {
-    const canvas = document.querySelector('#canvas');
-    const webGlRenderer = new THREE.WebGLRenderer({ antialias: true, canvas });
-    webGlRenderer.setClearColor(0xbfd1e5);
-    webGlRenderer.outputEncoding = THREE.sRGBEncoding;
-    webGlRenderer.shadowMap.enabled = true;
-    return new RendererComponent(webGlRenderer);
-}
-
-function setupThreeScene(): Scene {
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xbfd1e5);
-    return new Scene(scene);
-}
-
-function setupPerspectiveCamera(): Camera {
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.2, 5000);
-    camera.position.set(0, 30, 70);
-    camera.lookAt(new THREE.Vector3(0, 0, 0));
-    return new Camera(camera);
 }
