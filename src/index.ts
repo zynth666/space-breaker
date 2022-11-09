@@ -11,6 +11,8 @@ import Mesh from "./component/Mesh";
 import SceneInitializer from "./init/SceneInitializer";
 import RendererInitializer from "./init/RendererInitializer";
 import CameraInitializer from "./init/CameraInitializer";
+import HemisphereLightInitializer from "./init/HemisphereLightInitializer";
+import HemisphereLight from "./Component/HemisphereLight";
 
 const engine = new Engine();
 
@@ -36,11 +38,9 @@ function init() {
 
     new OrbitControls(cameraComponent.three, rendererComponent.three.domElement);
 
-    let hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.1);
-    hemiLight.color.setHSL(0.6, 0.6, 0.6);
-    hemiLight.groundColor.setHSL(0.1, 1, 0.4);
-    hemiLight.position.set(0, 50, 0);
-    sceneComponent.three.add(hemiLight);
+    const hemiLight = HemisphereLightInitializer.create(HemisphereLight);
+
+    sceneComponent.three.add(hemiLight.three);
 
     let dirLight = new THREE.DirectionalLight(0xffffff, 1);
     dirLight.color.setHSL(0.1, 1, 0.95);
