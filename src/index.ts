@@ -1,8 +1,9 @@
-import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import Ammo from 'ammojs-typed';
 import "./assets/sass/styles.scss";
+import * as THREE from "three";
+import Ammo from 'ammojs-typed';
 import Engine from "./engine/Engine";
+
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Renderer from "./system/Renderer";
 import RendererComponent from "./component/Renderer";
 import Scene from "./component/Scene";
@@ -13,6 +14,8 @@ import RendererInitializer from "./init/RendererInitializer";
 import CameraInitializer from "./init/CameraInitializer";
 import HemisphereLightInitializer from "./init/HemisphereLightInitializer";
 import HemisphereLight from "./component/HemisphereLight";
+import DirectionalLightInitializer from "./init/DirectionalLightInitializer";
+import DirectionalLight from "./component/DirectionalLight";
 
 const engine = new Engine();
 
@@ -39,28 +42,10 @@ function init() {
     new OrbitControls(cameraComponent.three, rendererComponent.three.domElement);
 
     const hemiLight = HemisphereLightInitializer.create(HemisphereLight);
-
     sceneComponent.three.add(hemiLight.three);
 
-    let dirLight = new THREE.DirectionalLight(0xffffff, 1);
-    dirLight.color.setHSL(0.1, 1, 0.95);
-    dirLight.position.set(-1, 1.75, 1);
-    dirLight.position.multiplyScalar(100);
-    sceneComponent.three.add(dirLight);
-
-    dirLight.castShadow = true;
-
-    dirLight.shadow.mapSize.width = 2048;
-    dirLight.shadow.mapSize.height = 2048;
-
-    let d = 50;
-
-    dirLight.shadow.camera.left = -d;
-    dirLight.shadow.camera.right = d;
-    dirLight.shadow.camera.top = d;
-    dirLight.shadow.camera.bottom = -d;
-
-    dirLight.shadow.camera.far = 13500;
+    let dirLight = DirectionalLightInitializer.create(DirectionalLight)
+    sceneComponent.three.add(dirLight.three);
 
     const cubeSize = 4;
     const cubeGeo = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
