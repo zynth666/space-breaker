@@ -12,7 +12,7 @@ import SceneInitializer from "./init/SceneInitializer";
 import RendererInitializer from "./init/RendererInitializer";
 import CameraInitializer from "./init/CameraInitializer";
 import HemisphereLightInitializer from "./init/HemisphereLightInitializer";
-import HemisphereLight from "./Component/HemisphereLight";
+import HemisphereLight from "./component/HemisphereLight";
 
 const engine = new Engine();
 

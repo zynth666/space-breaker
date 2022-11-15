@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import HemisphereLight from "../Component/HemisphereLight";
+import HemisphereLight from "../component/HemisphereLight";
 
 export default class HemisphereLightInitializer {
     public static create<T extends HemisphereLight>(c: new (skyColor?: THREE.ColorRepresentation, groundColor?: THREE.ColorRepresentation, intensity?: number) => T): T {
