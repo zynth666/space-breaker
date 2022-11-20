@@ -24,6 +24,10 @@ module.exports = {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
                 type: 'asset/resource',
             },
+            {
+                test: /\.gltf/,
+                type: 'asset/resource',
+            },
         ],
     },
     devServer: {
@@ -48,6 +52,8 @@ module.exports = {
     output: {
         filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist'),
-        clean: true
+        publicPath: '/',
+        clean: true,
+        assetModuleFilename: 'static/assets/[name][ext]',
     },
 };
