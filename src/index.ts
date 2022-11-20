@@ -20,6 +20,7 @@ import GLTFInitializer from "./init/GLTFInitializer";
 import GLTFModel from "./component/GLTFModel";
 
 import cubeUrl from "./assets/gltf/MetalCube.gltf";
+import { DirectionalLightHelper, HemisphereLightHelper } from "three";
 
 const engine = new Engine();
 
@@ -48,7 +49,7 @@ async function init() {
     const hemiLight = HemisphereLightInitializer.create(HemisphereLight);
     sceneComponent.three.add(hemiLight.three);
 
-    const dirLight = DirectionalLightInitializer.create(DirectionalLight)
+    const dirLight = DirectionalLightInitializer.create(DirectionalLight);
     sceneComponent.three.add(dirLight.three);
 
     const loader = new GLTFLoader();
