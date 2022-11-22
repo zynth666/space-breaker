@@ -20,6 +20,8 @@ import GLTFInitializer from "./init/GLTFInitializer";
 import GLTFModel from "./component/GLTFModel";
 
 import cubeUrl from "./assets/gltf/MetalCube.gltf";
+import Mesh from "./component/Mesh";
+import * as THREE from "three";
 
 const engine = new Engine();
 
@@ -34,7 +36,7 @@ async function init() {
     const renderEntity = engine.addEntity();
 
     const rendererComponent = RendererInitializer.create(RendererComponent);
-    const sceneComponent = await SceneInitializer.create(Scene);
+    const sceneComponent = SceneInitializer.create(Scene);
     const cameraComponent = CameraInitializer.create(Camera);
 
     engine.addComponent(renderEntity, rendererComponent);
@@ -54,6 +56,13 @@ async function init() {
     const loader = new GLTFLoader();
     const cube = await GLTFInitializer.create(GLTFModel, loader, cubeUrl);
     sceneComponent.three.add(cube.three);
+
+    const dustGeometry = new THREE.DodecahedronGeometry(1, 0);
+    const dustMaterial = new THREE.MeshPhongMaterial({ color: 0x010101 });
+    const mesh = new Mesh(dustGeometry, dustMaterial);
+    mesh.three.position.set(30, 0, 0);
+
+    sceneComponent.three.add(mesh.three);
 }
 
 function renderFrame() {
