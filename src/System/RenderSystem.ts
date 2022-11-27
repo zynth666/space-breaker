@@ -1,17 +1,17 @@
 import System from "./System";
-import RendererComponent from "../component/Renderer";
+import Renderer from "../component/Renderer";
 import Camera from "../component/Camera";
 import Scene from "../component/Scene";
 import { Entity } from "../entity/types";
 
-export default class Renderer extends System {
-    public requiredComponents = new Set<Function>([RendererComponent, Camera, Scene]);
+export default class RenderSystem extends System {
+    public requiredComponents = new Set<Function>([Renderer, Camera, Scene]);
 
     public update(entities: Set<Entity>): void {
         entities.forEach((entity) => {
             const entityContainer = this.engine.getComponents(entity);
 
-            const rendererComponent = entityContainer.get(RendererComponent)
+            const rendererComponent = entityContainer.get(Renderer)
             const renderer = rendererComponent.three;
 
             const cameraComponent = entityContainer.get(Camera)
