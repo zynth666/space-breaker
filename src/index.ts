@@ -27,6 +27,7 @@ import ControllerSystem from "./system/ControllerSystem";
 import Controller from "./component/Controller";
 import Velocity from "./component/Velocity";
 import MovementSystem from "./system/MovementSystem";
+import PaddleInitializer from "./init/PaddleInitializer";
 
 const engine = new Engine();
 
@@ -38,12 +39,11 @@ Ammo(Ammo).then(async () => {
 async function init() {
     const renderSystem = new RenderSystem();
 
-    const renderEntity = engine.addEntity();
-
     const rendererComponent = RendererInitializer.create(Renderer);
     const sceneComponent = SceneInitializer.create(Scene);
     const cameraComponent = CameraInitializer.create(Camera);
 
+    const renderEntity = engine.addEntity();
     engine.addComponent(renderEntity, rendererComponent);
     engine.addComponent(renderEntity, sceneComponent);
     engine.addComponent(renderEntity, cameraComponent);
@@ -52,15 +52,11 @@ async function init() {
 
     new OrbitControls(cameraComponent.three, rendererComponent.three.domElement);
 
-    const hemiLight = HemisphereLightInitializer.create(HemisphereLight);
+    const hemiLight = HemisphereLightInitializer.create(HemisphereLight, engine);
     sceneComponent.three.add(hemiLight.three);
-    const hemiLightEntity = engine.addEntity();
-    engine.addComponent(hemiLightEntity, hemiLight);
 
-    const dirLight = DirectionalLightInitializer.create(DirectionalLight);
+    const dirLight = DirectionalLightInitializer.create(DirectionalLight, engine);
     sceneComponent.three.add(dirLight.three);
-    const dirLightEntity = engine.addEntity();
-    engine.addComponent(dirLightEntity, dirLight);
 
     const loader = new GLTFLoader();
     const brick = await GLTFInitializer.create(GLTFModel, loader, cubeUrl);
@@ -75,19 +71,8 @@ async function init() {
 
     sceneComponent.three.add(mesh.three); */
 
-    const paddleGeometry = new THREE.BoxGeometry(5, 1, 1);
-    const paddleMaterial = new THREE.MeshPhongMaterial({ color: 0x0c0c0c });
-    const paddle = new Mesh(paddleGeometry, paddleMaterial);
-    paddle.three.position.set(0, 0, 15);
+    const paddle = PaddleInitializer.create(Mesh, engine);
     sceneComponent.three.add(paddle.three);
-    const paddleEntity = engine.addEntity();
-    engine.addComponent(paddleEntity, paddle);
-    const paddleDirection = new Direction();
-    const paddleVelocity = new Velocity(0.5);
-    const paddleController = new Controller({ "ArrowLeft": "left", "ArrowRight": "right" });
-    engine.addComponent(paddleEntity, paddleDirection);
-    engine.addComponent(paddleEntity, paddleVelocity);
-    engine.addComponent(paddleEntity, paddleController);
 
     const controllerSystem = new ControllerSystem();
     engine.addSystem(controllerSystem);
