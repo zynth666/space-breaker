@@ -83,7 +83,7 @@ async function init() {
     const paddleEntity = engine.addEntity();
     engine.addComponent(paddleEntity, paddle);
     const paddleDirection = new Direction();
-    const paddleVelocity = new Velocity();
+    const paddleVelocity = new Velocity(0.5);
     const paddleController = new Controller({ "ArrowLeft": "left", "ArrowRight": "right" });
     engine.addComponent(paddleEntity, paddleDirection);
     engine.addComponent(paddleEntity, paddleVelocity);
