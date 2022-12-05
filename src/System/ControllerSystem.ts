@@ -23,6 +23,7 @@ export default class ControllerSystem extends System {
 
             if (this.keys.length === 0) {
                 this.resetDirection(direction);
+                return;
             }
 
             this.keys.forEach(key => {

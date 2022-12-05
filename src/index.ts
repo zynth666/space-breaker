@@ -3,7 +3,6 @@ import Ammo from 'ammojs-typed';
 import Engine from "./engine/Engine";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 import RenderSystem from "./system/RenderSystem";
 import Renderer from "./component/Renderer";
@@ -16,18 +15,11 @@ import HemisphereLightInitializer from "./init/HemisphereLightInitializer";
 import HemisphereLight from "./component/HemisphereLight";
 import DirectionalLightInitializer from "./init/DirectionalLightInitializer";
 import DirectionalLight from "./component/DirectionalLight";
-import GLTFInitializer from "./init/GLTFInitializer";
-import GLTFModel from "./component/GLTFModel";
-
-import cubeUrl from "./assets/gltf/MetalCube.gltf";
 import Mesh from "./component/Mesh";
-import * as THREE from "three";
-import Direction from "./component/Direction";
 import ControllerSystem from "./system/ControllerSystem";
-import Controller from "./component/Controller";
-import Velocity from "./component/Velocity";
 import MovementSystem from "./system/MovementSystem";
 import PaddleInitializer from "./init/PaddleInitializer";
+import Level1Initializer from "./init/Level1Initializer";
 
 const engine = new Engine();
 
@@ -58,12 +50,6 @@ async function init() {
     const dirLight = DirectionalLightInitializer.create(DirectionalLight, engine);
     sceneComponent.three.add(dirLight.three);
 
-    const loader = new GLTFLoader();
-    const brick = await GLTFInitializer.create(GLTFModel, loader, cubeUrl);
-    sceneComponent.three.add(brick.three);
-    const brickEntity = engine.addEntity();
-    engine.addComponent(brickEntity, brick);
-
     /* const dustGeometry = new THREE.DodecahedronGeometry(1, 0);
     const dustMaterial = new THREE.MeshPhongMaterial({ color: 0x010101 });
     const mesh = new Mesh(dustGeometry, dustMaterial);
@@ -80,6 +66,7 @@ async function init() {
     const movementSystem = new MovementSystem();
     engine.addSystem(movementSystem);
 
+    await Level1Initializer.init(sceneComponent);
 }
 
 function renderFrame() {
