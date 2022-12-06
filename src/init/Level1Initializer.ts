@@ -7,8 +7,8 @@ import Scene from "../component/Scene";
 import { Mesh } from "three";
 
 export default class Level1Initializer {
-    public static async init(scene: Scene) {
-        const count = 50;
+    public static async create(scene: Scene) {
+        const count = 70;
         const loader = new GLTFLoader();
         const brickGLTF = await GLTFInitializer.create(GLTFModel, loader, cubeUrl);
 
@@ -17,11 +17,14 @@ export default class Level1Initializer {
 
         const dummy = new THREE.Object3D();
 
-        const offsetX = 9;
+        const offsetX = 14;
+        const offsetZ = -20;
+        const spacing = 3;
         let index = 0;
+
         for (let i = 0; i <= count / 10; i++) {
-            for (let j = 0; j < count / 5; j++) {
-                dummy.position.set(offsetX - j * 2, 0, i * 2);
+            for (let j = 0; j < count / 7; j++) {
+                dummy.position.set(offsetX - j * spacing, 0, offsetZ + i * spacing);
                 dummy.updateMatrix();
                 instancedMesh.setMatrixAt(index++, dummy.matrix);
             }
