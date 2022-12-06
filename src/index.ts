@@ -5,17 +5,11 @@ import Engine from "./engine/Engine";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 import RenderSystem from "./system/RenderSystem";
-import Renderer from "./component/Renderer";
-import Scene from "./component/Scene";
-import Camera from "./component/Camera";
 import SceneInitializer from "./init/SceneInitializer";
 import RendererInitializer from "./init/RendererInitializer";
 import CameraInitializer from "./init/CameraInitializer";
 import HemisphereLightInitializer from "./init/HemisphereLightInitializer";
-import HemisphereLight from "./component/HemisphereLight";
 import DirectionalLightInitializer from "./init/DirectionalLightInitializer";
-import DirectionalLight from "./component/DirectionalLight";
-import Mesh from "./component/Mesh";
 import ControllerSystem from "./system/ControllerSystem";
 import MovementSystem from "./system/MovementSystem";
 import PaddleInitializer from "./init/PaddleInitializer";
