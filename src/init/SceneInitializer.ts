@@ -7,13 +7,11 @@ import skyDown from "../assets/images/corona_dn.png";
 import skyFront from "../assets/images/corona_ft.png";
 import skyBack from "../assets/images/corona_bk.png";
 
-type SceneComponentType<T> = new (scene: THREE.Scene) => T;
-
 export default class SceneInitializer {
-    public static create<T extends Scene>(c: SceneComponentType<T>): T {
+    public static create(): Scene {
         const scene = new THREE.Scene();
         try {
-            const loader = new THREE.CubeTextureLoader();
+            /* const loader = new THREE.CubeTextureLoader();
             const texture = loader.load([
                 skyLeft,
                 skyRight,
@@ -23,9 +21,11 @@ export default class SceneInitializer {
                 skyBack,
             ]);
             scene.background = texture;
-            scene.background.encoding = THREE.sRGBEncoding;
+            scene.background.encoding = THREE.sRGBEncoding; */
 
-            return new c(scene);
+            scene.background = new THREE.Color(0x000000);
+
+            return new Scene(scene);
         } catch (error) {
             console.error(error);
         }
