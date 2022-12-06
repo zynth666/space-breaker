@@ -3,8 +3,8 @@ import DirectionalLight from "../component/DirectionalLight";
 import Engine from "../engine/Engine";
 
 export default class DirectionalLightInitializer {
-    public static create<T extends DirectionalLight>(c: new (color?: THREE.ColorRepresentation, intensity?: number) => T, engine: Engine): T {
-        const dirLight = new c(0xffffff, 10);
+    public static create(engine: Engine): DirectionalLight {
+        const dirLight = new DirectionalLight(0xffffff, 10);
         dirLight.three.color.setHSL(0.1, 1, 0.95);
         dirLight.three.position.set(-1, 1.75, 1);
         dirLight.three.position.multiplyScalar(100);

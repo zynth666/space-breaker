@@ -5,13 +5,11 @@ import Mesh from "../component/Mesh";
 import Velocity from "../component/Velocity";
 import Engine from "../engine/Engine";
 
-type MeshComponentType<T> = new (geometry: THREE.BufferGeometry, material: THREE.Material) => T;
-
 export default class PaddleInitializer {
-    public static create<T extends Mesh>(c: MeshComponentType<T>, engine: Engine): T {
+    public static create(engine: Engine): Mesh {
         const paddleGeometry = new THREE.BoxGeometry(5, 1, 1);
         const paddleMaterial = new THREE.MeshPhongMaterial({ color: 0x0c0c0c });
-        const paddle = new c(paddleGeometry, paddleMaterial);
+        const paddle = new Mesh(paddleGeometry, paddleMaterial);
         paddle.three.position.set(0, 0, 15);
 
         const paddleEntity = engine.addEntity();
