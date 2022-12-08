@@ -27,7 +27,7 @@
   "homepage": "https://github.com/zynth666/space-breaker#readme",
   "devDependencies": {
     "@types/three": "^0.144.0",
-    "css-loader": "^6.7.1",
+    "css-loader": "^6.7.2",
     "html-webpack-plugin": "^5.5.0",
     "sass": "^1.56.1",
     "sass-loader": "^13.1.0",
