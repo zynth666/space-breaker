@@ -56,4 +56,7 @@ module.exports = {
         clean: true,
         assetModuleFilename: 'static/assets/[name][ext]',
     },
+    experiments: {
+        asyncWebAssembly: true
+    }
 };

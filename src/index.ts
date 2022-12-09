@@ -1,5 +1,4 @@
 import "./assets/sass/styles.scss";
-import Ammo from 'ammojs-typed';
 import Engine from "./engine/Engine";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
@@ -21,9 +20,10 @@ import KeyboardControls from "./system/KeyboardControls";
 
 const engine = new Engine();
 
-Ammo(Ammo).then(async () => {
+import('@dimforge/rapier3d').then(async RAPIER => {
     await init();
     renderFrame();
+    console.log(RAPIER);
 });
 
 async function init() {
