@@ -1,26 +1,27 @@
 export default class KeyboardControls {
-    keys: string[] = [];
+    public static keys: string[] = [];
+    public static attached: boolean = false;
 
-    constructor() {
-        window.addEventListener("keydown", this.keydown);
-        window.addEventListener("keyup", this.keyup);
+    public static inKeymap(map: string[], key: string): boolean {
+        return map.findIndex(keyMapKey => key === keyMapKey) >= 0 ? true : false;
     }
 
-    public inKeymap(keyMapKeys: string[], key: string): boolean {
-        return keyMapKeys.findIndex(keyMapKey => key === keyMapKey) >= 0 ? true : false;
-    }
-
-    public isPressed(key: string) {
+    public static isPressed(key: string) {
         return this.keys.findIndex(needle => needle === key) >= 0 ? true : false;
     }
 
-    public keydown = (event: KeyboardEvent) => {
-        if (!this.isPressed(event.key)) {
-            this.keys.push(event.key);
+    public static keydown = (event: KeyboardEvent) => {
+        if (!this.isPressed(event.code)) {
+            this.keys.push(event.code);
         }
     }
 
-    public keyup = (event: KeyboardEvent) => {
-        this.keys.splice(this.keys.findIndex(key => key === event.key), 1);
+    public static keyup = (event: KeyboardEvent) => {
+        this.keys.splice(KeyboardControls.keys.findIndex(key => key === event.code), 1);
+    }
+
+    public static init() {
+        window.addEventListener("keydown", this.keydown);
+        window.addEventListener("keyup", this.keyup);
     }
 }

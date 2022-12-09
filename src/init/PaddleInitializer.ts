@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import Controller from "../component/Controller";
-import Direction from "../component/Direction";
+import Force from "../component/Force";
 import Mesh from "../component/Mesh";
 import Velocity from "../component/Velocity";
 import Engine from "../engine/Engine";
@@ -14,11 +14,11 @@ export default class PaddleInitializer {
 
         const paddleEntity = engine.addEntity();
         engine.addComponent(paddleEntity, paddle);
-        const paddleDirection = new Direction();
-        const paddleVelocity = new Velocity(0.5);
+        const paddleVelocity = new Velocity();
+        const paddleForce = new Force(0.5);
         const paddleController = new Controller({ "ArrowLeft": "left", "ArrowRight": "right" });
-        engine.addComponent(paddleEntity, paddleDirection);
         engine.addComponent(paddleEntity, paddleVelocity);
+        engine.addComponent(paddleEntity, paddleForce);
         engine.addComponent(paddleEntity, paddleController);
         return paddle;
     }

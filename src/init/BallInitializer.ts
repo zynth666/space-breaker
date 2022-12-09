@@ -1,9 +1,7 @@
 import * as THREE from "three";
-import Action from "../component/Action";
-import ComponentContainer from "../component/ComponentContainer";
-import Direction from "../component/Direction";
+import Fireable from "../component/Fireable";
+import Force from "../component/Force";
 import Mesh from "../component/Mesh";
-import Velocity from "../component/Velocity";
 import Engine from "../engine/Engine";
 
 export default class BallInitializer {
@@ -15,19 +13,12 @@ export default class BallInitializer {
 
         const ballEntity = engine.addEntity();
         engine.addComponent(ballEntity, ball);
-        const ballDirection = new Direction();
-        const ballVelocity = new Velocity(0.5);
 
-        const launchBall = (entity: ComponentContainer) => {
-            const direction = entity.get(Direction);
-            direction.vec.setZ(-1);
-            direction.vec.setX(Math.random() * 2 - 1);
-        };
+        const ballFireable = new Fireable();
+        engine.addComponent(ballEntity, ballFireable);
 
-        const ballController = new Action({ " ": launchBall });
-        engine.addComponent(ballEntity, ballDirection);
-        engine.addComponent(ballEntity, ballVelocity);
-        engine.addComponent(ballEntity, ballController);
+        const ballForce = new Force(0.5);
+        engine.addComponent(ballEntity, ballForce);
 
         return ball;
     }

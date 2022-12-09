@@ -4,8 +4,6 @@ import KeyboardControls from "./KeyboardControls";
 import System from "./System";
 
 export default class ActionSystem extends System {
-    public keyboardControls = new KeyboardControls();
-
     public requiredComponents = new Set<Function>([Action]);
 
     public update(entities: Set<Entity>): void {
@@ -13,8 +11,8 @@ export default class ActionSystem extends System {
             const entityContainer = this.engine.getComponents(entity);
             const action = entityContainer.get(Action);
 
-            this.keyboardControls.keys.forEach(key => {
-                if (this.keyboardControls.isPressed(key) && this.keyboardControls.inKeymap(Object.keys(action.keyMap), key)) {
+            KeyboardControls.keys.forEach(key => {
+                if (KeyboardControls.isPressed(key) && KeyboardControls.inKeymap(Object.keys(action.keyMap), key)) {
                     action.keyMap[key](entityContainer);
                 }
             });

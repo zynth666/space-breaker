@@ -16,7 +16,8 @@ import PaddleInitializer from "./init/PaddleInitializer";
 import Level1Initializer from "./init/Level1Initializer";
 import ArenaInitializer from "./init/ArenaInitializer";
 import BallInitializer from "./init/BallInitializer";
-import ActionSystem from "./system/ActionSystem";
+import FireBallSystem from "./system/FireBallSystem";
+import KeyboardControls from "./system/KeyboardControls";
 
 const engine = new Engine();
 
@@ -26,14 +27,15 @@ Ammo(Ammo).then(async () => {
 });
 
 async function init() {
+    KeyboardControls.init();
     const renderSystem = new RenderSystem();
     const controllerSystem = new ControllerSystem();
-    const actionSystem = new ActionSystem();
+    const fireBallSystem = new FireBallSystem();
     const movementSystem = new MovementSystem();
 
     engine.addSystem(renderSystem);
     engine.addSystem(controllerSystem);
-    engine.addSystem(actionSystem);
+    engine.addSystem(fireBallSystem);
     engine.addSystem(movementSystem);
 
     const rendererComponent = RendererInitializer.create();

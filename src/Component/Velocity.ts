@@ -1,11 +1,6 @@
 import Component from "./Component";
+import * as THREE from "three";
 
 export default class Velocity extends Component {
-    value: number;
-
-    constructor(velocity: number) {
-        super();
-
-        this.value = velocity;
-    }
+    vec: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
 }
