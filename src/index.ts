@@ -1,12 +1,8 @@
 import "./assets/sass/styles.scss";
 import Engine from "./engine/Engine";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-
 import RenderSystem from "./system/RenderSystem";
-import SceneInitializer from "./init/SceneInitializer";
 import RendererInitializer from "./init/RendererInitializer";
-import CameraInitializer from "./init/CameraInitializer";
 import HemisphereLightInitializer from "./init/HemisphereLightInitializer";
 import DirectionalLightInitializer from "./init/DirectionalLightInitializer";
 import ControllerSystem from "./system/ControllerSystem";
@@ -17,16 +13,17 @@ import ArenaInitializer from "./init/ArenaInitializer";
 import BallInitializer from "./init/BallInitializer";
 import FireBallSystem from "./system/FireBallSystem";
 import KeyboardControls from "./system/KeyboardControls";
+import Scene from "./component/Scene";
+import Mesh from "./component/Mesh";
 
 const engine = new Engine();
 
 import('@dimforge/rapier3d').then(async RAPIER => {
-    await init();
+    await init<typeof RAPIER>(RAPIER);
     renderFrame();
-    console.log(RAPIER);
 });
 
-async function init() {
+async function init<T>(RAPIER: T) {
     KeyboardControls.init();
     const renderSystem = new RenderSystem();
     const controllerSystem = new ControllerSystem();
@@ -38,41 +35,27 @@ async function init() {
     engine.addSystem(fireBallSystem);
     engine.addSystem(movementSystem);
 
-    const rendererComponent = RendererInitializer.create();
-    const scene = SceneInitializer.create();
-    const cameraComponent = CameraInitializer.create();
+    const renderer = RendererInitializer.create(engine);
+    const scene = engine.getComponents(renderer).get(Scene).three;
 
-    const renderEntity = engine.addEntity();
-    engine.addComponent(renderEntity, rendererComponent);
-    engine.addComponent(renderEntity, scene);
-    engine.addComponent(renderEntity, cameraComponent);
-
-
-    new OrbitControls(cameraComponent.three, rendererComponent.three.domElement);
-
-    const hemiLight = HemisphereLightInitializer.create(engine);
-    scene.three.add(hemiLight.three);
-
-    const dirLight = DirectionalLightInitializer.create(engine);
-    scene.three.add(dirLight.three);
+    HemisphereLightInitializer.create(engine, scene);
+    DirectionalLightInitializer.create(engine, scene);
 
     /* const dustGeometry = new THREE.DodecahedronGeometry(1, 0);
     const dustMaterial = new THREE.MeshPhongMaterial({ color: 0x010101 });
     const mesh = new Mesh(dustGeometry, dustMaterial);
     mesh.three.position.set(30, 0, 0);
 
-    scene.three.add(mesh.three); */
+    scene.add(mesh.three); */
 
-    const paddle = PaddleInitializer.create(engine);
-    scene.three.add(paddle.three);
+    const paddle = PaddleInitializer.create(engine, scene);
 
-    const ball = BallInitializer.create(engine);
-    paddle.three.add(ball.three);
+    BallInitializer.create(engine, paddle);
 
     const arena = ArenaInitializer.create();
-    scene.three.add(arena);
+    scene.add(arena);
 
-    await Level1Initializer.create(scene);
+    await Level1Initializer.create(engine, scene);
 }
 
 function renderFrame() {

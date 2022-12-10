@@ -3,16 +3,16 @@ import cubeUrl from "../assets/gltf/MetalCube.gltf";
 import GLTFInitializer from "../init/GLTFInitializer";
 import GLTFModel from "../component/GLTFModel";
 import * as THREE from "three";
-import Scene from "../component/Scene";
 import { Mesh } from "three";
+import Engine from "../engine/Engine";
 
 export default class Level1Initializer {
-    public static async create(scene: Scene) {
+    public static async create(engine: Engine, scene: THREE.Scene) {
         const count = 70;
         const loader = new GLTFLoader();
-        const brickGLTF = await GLTFInitializer.create(GLTFModel, loader, cubeUrl);
+        const brickEntity = await GLTFInitializer.create(engine, loader, cubeUrl);
 
-        const brick = brickGLTF.three.scene.getObjectByName("Cube") as Mesh;
+        const brick = engine.getComponents(brickEntity).get(GLTFModel).three.scene.getObjectByName("Cube") as Mesh;
         const instancedMesh = new THREE.InstancedMesh(brick.geometry, brick.material, count);
 
         const dummy = new THREE.Object3D();
@@ -31,6 +31,6 @@ export default class Level1Initializer {
         }
 
         instancedMesh.instanceMatrix.needsUpdate = true;
-        scene.three.add(instancedMesh);
+        scene.add(instancedMesh);
     }
 }
