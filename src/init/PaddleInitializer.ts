@@ -5,9 +5,10 @@ import Mesh from "../component/Mesh";
 import Velocity from "../component/Velocity";
 import Engine from "../engine/Engine";
 import { Entity } from "../entity/types";
+import type { Rapier } from "../types";
 
 export default class PaddleInitializer {
-    public static create(engine: Engine, scene: THREE.Scene): Entity {
+    public static create(engine: Engine, scene: THREE.Scene, RAPIER: Rapier): Entity {
         const paddleGeometry = new THREE.BoxGeometry(5, 1, 1);
         const paddleMaterial = new THREE.MeshPhongMaterial({ color: 0x0c0c0c });
         const paddle = new Mesh(paddleGeometry, paddleMaterial);
