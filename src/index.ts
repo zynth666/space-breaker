@@ -6,7 +6,7 @@ import RendererInitializer from "./init/RendererInitializer";
 import HemisphereLightInitializer from "./init/HemisphereLightInitializer";
 import DirectionalLightInitializer from "./init/DirectionalLightInitializer";
 import ControllerSystem from "./system/ControllerSystem";
-import MovementSystem from "./system/MovementSystem";
+import CharacterMovementSystem from "./system/CharacterMovementSystem";
 import PaddleInitializer from "./init/PaddleInitializer";
 import Level1Initializer from "./init/Level1Initializer";
 import ArenaInitializer from "./init/ArenaInitializer";
@@ -15,20 +15,21 @@ import FireBallSystem from "./system/FireBallSystem";
 import KeyboardControls from "./system/KeyboardControls";
 import Scene from "./component/Scene";
 import type { Rapier } from "./types";
+import { World } from "@dimforge/rapier3d";
 const engine = new Engine();
 
 import('@dimforge/rapier3d').then(async RAPIER => {
     const world = new RAPIER.World({ x: 0.0, y: 0.0, z: 0.0 });
-    await init(RAPIER);
+    await init(RAPIER, world);
     renderFrame();
 });
 
-async function init(RAPIER: Rapier) {
+async function init(RAPIER: Rapier, world: World) {
     KeyboardControls.init();
     const renderSystem = new RenderSystem();
     const controllerSystem = new ControllerSystem();
     const fireBallSystem = new FireBallSystem();
-    const movementSystem = new MovementSystem();
+    const movementSystem = new CharacterMovementSystem();
 
     engine.addSystem(renderSystem);
     engine.addSystem(controllerSystem);
@@ -48,11 +49,11 @@ async function init(RAPIER: Rapier) {
 
     scene.add(mesh.three); */
 
-    const paddle = PaddleInitializer.create(engine, scene, RAPIER);
+    const paddle = PaddleInitializer.create(engine, scene, world);
 
     BallInitializer.create(engine, paddle);
 
-    const arena = ArenaInitializer.create();
+    const arena = ArenaInitializer.create(world);
     scene.add(arena);
 
     await Level1Initializer.create(engine, scene);
