@@ -9,6 +9,7 @@ import { Entity } from "../entity/types";
 import CharacterController from "../component/CharacterController";
 import { World } from "@dimforge/rapier3d";
 import type { TripleTuple } from "../types";
+import CuboidCollider from "../component/CuboidCollider";
 
 export default class PaddleInitializer {
     public static create(engine: Engine, scene: THREE.Scene, world: World): Entity {
@@ -28,6 +29,7 @@ export default class PaddleInitializer {
         const rigidBody = new KinematicVelocityBasedRigidBody(world);
         rigidBody.value.setTranslation(...position);
         const characterController = new CharacterController(world);
+        const paddleCollider = new CuboidCollider(...dimensions, world);
 
         engine.addComponent(paddleEntity, paddle);
         engine.addComponent(paddleEntity, paddleVelocity);
@@ -35,6 +37,7 @@ export default class PaddleInitializer {
         engine.addComponent(paddleEntity, paddleController);
         engine.addComponent(paddleEntity, rigidBody);
         engine.addComponent(paddleEntity, characterController);
+        engine.addComponent(paddleEntity, paddleCollider);
 
         return paddleEntity;
     }

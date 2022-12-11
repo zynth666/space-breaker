@@ -1,12 +1,15 @@
 import { World } from "@dimforge/rapier3d";
 import * as THREE from "three";
+import CuboidCollider from "../component/CuboidCollider";
 import FixedRigidBody from "../component/FixedRigidBody";
 import { TripleTuple } from "../types";
 
 export default class ArenaInitializer {
     public static create(world: World): THREE.Group {
-        const arenaHorizontalGeometry = new THREE.BoxGeometry(1, 1, 50);
-        const arenaVerticalGeometry = new THREE.BoxGeometry(41, 1, 1);
+        const horizontalGeometry: TripleTuple<number> = [1, 1, 50];
+        const arenaHorizontalGeometry = new THREE.BoxGeometry(...horizontalGeometry);
+        const verticalGeometry: TripleTuple<number> = [41, 1, 1];
+        const arenaVerticalGeometry = new THREE.BoxGeometry(...verticalGeometry);
         const arenaMaterial = new THREE.MeshPhongMaterial({ color: 0x22ff22 });
 
         const arenaLeftMesh = new THREE.Mesh(arenaHorizontalGeometry, arenaMaterial);
@@ -37,6 +40,15 @@ export default class ArenaInitializer {
 
         const bottomRigidBody = new FixedRigidBody(world);
         bottomRigidBody.value.setTranslation(...arenaBottomPosition);
+
+        const arenaLeftCollider = new CuboidCollider(...horizontalGeometry, world);
+        arenaLeftCollider.value.setTranslation(...arenaLeftPosition);
+        const arenaRightCollider = new CuboidCollider(...horizontalGeometry, world);
+        arenaRightCollider.value.setTranslation(...arenaRightPosition);
+        const arenaTopCollider = new CuboidCollider(...verticalGeometry, world);
+        arenaTopCollider.value.setTranslation(...arenaTopPosition);
+        const arenaBottomCollider = new CuboidCollider(...verticalGeometry, world);
+        arenaBottomCollider.value.setTranslation(...arenaBottomPosition);
 
         const arena = new THREE.Group();
         arena.add(arenaLeftMesh, arenaRightMesh, arenaTopMesh, arenaBottomMesh);
