@@ -29,12 +29,12 @@ async function init(RAPIER: Rapier, world: World) {
     const renderSystem = new RenderSystem();
     const controllerSystem = new ControllerSystem();
     const fireBallSystem = new FireBallSystem();
-    const movementSystem = new CharacterMovementSystem();
+    const characterMovementSystem = new CharacterMovementSystem();
 
     engine.addSystem(renderSystem);
     engine.addSystem(controllerSystem);
     engine.addSystem(fireBallSystem);
-    engine.addSystem(movementSystem);
+    engine.addSystem(characterMovementSystem);
 
     const renderer = RendererInitializer.create(engine);
     const scene = engine.getComponents(renderer).get(Scene).three;

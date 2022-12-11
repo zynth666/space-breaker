@@ -1,12 +1,12 @@
-import { RigidBodyDesc, World } from "@dimforge/rapier3d";
+import { RigidBody, RigidBodyDesc, World } from "@dimforge/rapier3d";
 import Component from "./Component";
 
 export default class FixedRigidBody extends Component {
-    public value: RigidBodyDesc;
+    public value: RigidBody;
 
     constructor(world: World) {
         super();
-        this.value = RigidBodyDesc.fixed();
-        world.createRigidBody(this.value);
+        const rigidBody = RigidBodyDesc.fixed();
+        this.value = world.createRigidBody(rigidBody);
     }
 }

@@ -1,12 +1,12 @@
-import { ColliderDesc, World } from "@dimforge/rapier3d";
+import { Collider, ColliderDesc, RigidBody, World } from "@dimforge/rapier3d";
 import Component from "./Component";
 
 export default class CuboidCollider extends Component {
-    public value: ColliderDesc;
+    public value: Collider;
 
-    constructor(width: number, height: number, depth: number, world: World) {
+    constructor(width: number, height: number, depth: number, world: World, rigidBody?: RigidBody) {
         super();
-        this.value = ColliderDesc.cuboid(width, height, depth);
-        world.createCollider(this.value);
+        const collider = ColliderDesc.cuboid(width, height, depth);
+        this.value = world.createCollider(collider, rigidBody);
     }
 }

@@ -1,11 +1,12 @@
-import { RigidBodyDesc, World } from "@dimforge/rapier3d";
+import { RigidBody, RigidBodyDesc, World } from "@dimforge/rapier3d";
 import Component from "./Component";
 
 export default class KinematicVelocityBasedRigidBody extends Component {
-    public value = RigidBodyDesc.kinematicVelocityBased();
+    public value: RigidBody;
 
     constructor(world: World) {
         super();
-        world.createRigidBody(this.value);
+        const rigidBody = RigidBodyDesc.kinematicVelocityBased();
+        this.value = world.createRigidBody(rigidBody);
     }
 }

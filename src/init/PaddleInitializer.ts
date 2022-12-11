@@ -10,6 +10,7 @@ import CharacterController from "../component/CharacterController";
 import { World } from "@dimforge/rapier3d";
 import type { TripleTuple } from "../types";
 import CuboidCollider from "../component/CuboidCollider";
+import Position from "../component/Position";
 
 export default class PaddleInitializer {
     public static create(engine: Engine, scene: THREE.Scene, world: World): Entity {
@@ -18,8 +19,8 @@ export default class PaddleInitializer {
         const paddleMaterial = new THREE.MeshPhongMaterial({ color: 0x0c0c0c });
         const paddle = new Mesh(paddleGeometry, paddleMaterial);
 
-        const position: TripleTuple<number> = [0, 0, 15];
-        paddle.three.position.set(...position);
+        const position = new Position(0, 0, 15);
+        paddle.three.position.set(position.value.x, position.value.y, position.value.z);
         scene.add(paddle.three);
 
         const paddleEntity = engine.addEntity();
@@ -27,9 +28,10 @@ export default class PaddleInitializer {
         const paddleForce = new Force(0.5);
         const paddleController = new Controller({ "ArrowLeft": "left", "ArrowRight": "right" });
         const rigidBody = new KinematicVelocityBasedRigidBody(world);
-        rigidBody.value.setTranslation(...position);
+        rigidBody.value.enableCcd(true);
+        rigidBody.value.setTranslation(position.value, true);
         const characterController = new CharacterController(world);
-        const paddleCollider = new CuboidCollider(...dimensions, world);
+        const paddleCollider = new CuboidCollider(...dimensions, world, rigidBody.value);
 
         engine.addComponent(paddleEntity, paddle);
         engine.addComponent(paddleEntity, paddleVelocity);
@@ -38,6 +40,7 @@ export default class PaddleInitializer {
         engine.addComponent(paddleEntity, rigidBody);
         engine.addComponent(paddleEntity, characterController);
         engine.addComponent(paddleEntity, paddleCollider);
+        engine.addComponent(paddleEntity, position);
 
         return paddleEntity;
     }

@@ -30,10 +30,10 @@ export default class ControllerSystem extends System {
 
         switch (key) {
             case "left":
-                velocity.vec.setX(-1);
+                velocity.vec.setX(-0.5);
                 break;
             case "right":
-                velocity.vec.setX(1);
+                velocity.vec.setX(0.5);
                 break;
         }
 
