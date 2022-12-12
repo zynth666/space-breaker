@@ -16,15 +16,16 @@ import KeyboardControls from "./system/KeyboardControls";
 import Scene from "./component/Scene";
 import type { Rapier } from "./types";
 import { World } from "@dimforge/rapier3d";
+import RectangularLightInitializer from "./init/RectangularLightInitializer";
 const engine = new Engine();
 
 import('@dimforge/rapier3d').then(async RAPIER => {
     const world = new RAPIER.World({ x: 0.0, y: 0.0, z: 0.0 });
-    await init(RAPIER, world);
+    await init(world);
     renderFrame();
 });
 
-async function init(RAPIER: Rapier, world: World) {
+async function init(world: World) {
     KeyboardControls.init();
     const renderSystem = new RenderSystem();
     const controllerSystem = new ControllerSystem();
@@ -39,8 +40,7 @@ async function init(RAPIER: Rapier, world: World) {
     const renderer = RendererInitializer.create(engine);
     const scene = engine.getComponents(renderer).get(Scene).three;
 
-    HemisphereLightInitializer.create(engine, scene);
-    DirectionalLightInitializer.create(engine, scene);
+    RectangularLightInitializer.create(engine, scene);
 
     /* const dustGeometry = new THREE.DodecahedronGeometry(1, 0);
     const dustMaterial = new THREE.MeshPhongMaterial({ color: 0x010101 });

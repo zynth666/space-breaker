@@ -11,12 +11,15 @@ export default class ArenaInitializer {
         const arenaHorizontalGeometry = new THREE.BoxGeometry(...horizontalGeometry);
         const verticalGeometry: TripleTuple<number> = [41, 1, 1];
         const arenaVerticalGeometry = new THREE.BoxGeometry(...verticalGeometry);
-        const arenaMaterial = new THREE.MeshPhongMaterial({ color: 0x22ff22 });
+        const floorGeometry: TripleTuple<number> = [40, 1, 50];
+        const arenaFloorGeometry = new THREE.BoxGeometry(...floorGeometry);
+        const arenaMaterial = new THREE.MeshStandardMaterial({ color: 0x808080, roughness: 0.1, metalness: 0 });
 
         const arenaLeftMesh = new THREE.Mesh(arenaHorizontalGeometry, arenaMaterial);
         const arenaRightMesh = new THREE.Mesh(arenaHorizontalGeometry, arenaMaterial);
         const arenaTopMesh = new THREE.Mesh(arenaVerticalGeometry, arenaMaterial);
         const arenaBottomMesh = new THREE.Mesh(arenaVerticalGeometry, arenaMaterial);
+        const arenaFloorMesh = new THREE.Mesh(arenaFloorGeometry, arenaMaterial);
 
         const arenaLeftPosition: TripleTuple<number> = [-20, 0, 0];
         const arenaLeftPositionComponent = new Position(...arenaLeftPosition);
@@ -34,6 +37,10 @@ export default class ArenaInitializer {
         const arenaBottomPositionComponent = new Position(...arenaLeftPosition);
         arenaBottomMesh.position.set(...arenaBottomPosition);
 
+        const arenaFloorPosition: TripleTuple<number> = [0, -1.25, 0];
+        const arenaFloorPositionComponent = new Position(...arenaFloorPosition);
+        arenaFloorMesh.position.set(...arenaFloorPosition);
+
         const arenaLeftCollider = new CuboidCollider(...horizontalGeometry, world);
         arenaLeftCollider.value.setTranslation(arenaLeftPositionComponent.value);
         const arenaRightCollider = new CuboidCollider(...horizontalGeometry, world);
@@ -44,7 +51,7 @@ export default class ArenaInitializer {
         arenaBottomCollider.value.setTranslation(arenaBottomPositionComponent.value);
 
         const arena = new THREE.Group();
-        arena.add(arenaLeftMesh, arenaRightMesh, arenaTopMesh, arenaBottomMesh);
+        arena.add(arenaLeftMesh, arenaRightMesh, arenaTopMesh, arenaBottomMesh, arenaFloorMesh);
 
         return arena;
     }

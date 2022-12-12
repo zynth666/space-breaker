@@ -1,5 +1,5 @@
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import cubeUrl from "../assets/gltf/MetalCube.gltf";
+import cubeUrl from "../assets/gltf/SpaceCube.gltf";
 import GLTFInitializer from "../init/GLTFInitializer";
 import GLTFModel from "../component/GLTFModel";
 import * as THREE from "three";
