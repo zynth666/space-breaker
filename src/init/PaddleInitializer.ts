@@ -23,16 +23,18 @@ export default class PaddleInitializer {
         paddle.three.position.set(position.value.x, position.value.y, position.value.z);
         scene.add(paddle.three);
 
-        const paddleEntity = engine.addEntity();
         const paddleVelocity = new Velocity();
         const paddleForce = new Force(0.5);
         const paddleController = new Controller({ "ArrowLeft": "left", "ArrowRight": "right" });
+
         const rigidBody = new KinematicVelocityBasedRigidBody(world);
         rigidBody.value.enableCcd(true);
         rigidBody.value.setTranslation(position.value, true);
+
         const characterController = new CharacterController(world);
         const paddleCollider = new CuboidCollider(...dimensions, world, rigidBody.value);
 
+        const paddleEntity = engine.addEntity();
         engine.addComponent(paddleEntity, paddle);
         engine.addComponent(paddleEntity, paddleVelocity);
         engine.addComponent(paddleEntity, paddleForce);

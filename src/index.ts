@@ -3,8 +3,6 @@ import Engine from "./engine/Engine";
 
 import RenderSystem from "./system/RenderSystem";
 import RendererInitializer from "./init/RendererInitializer";
-import HemisphereLightInitializer from "./init/HemisphereLightInitializer";
-import DirectionalLightInitializer from "./init/DirectionalLightInitializer";
 import ControllerSystem from "./system/ControllerSystem";
 import CharacterMovementSystem from "./system/CharacterMovementSystem";
 import PaddleInitializer from "./init/PaddleInitializer";
@@ -14,14 +12,17 @@ import BallInitializer from "./init/BallInitializer";
 import FireBallSystem from "./system/FireBallSystem";
 import KeyboardControls from "./system/KeyboardControls";
 import Scene from "./component/Scene";
-import type { Rapier } from "./types";
 import { World } from "@dimforge/rapier3d";
 import RectangularLightInitializer from "./init/RectangularLightInitializer";
+import ColliderDebugSystem from "./system/ColliderDebugSystem";
+
 const engine = new Engine();
+let physicsWorld: World;
 
 import('@dimforge/rapier3d').then(async RAPIER => {
     const world = new RAPIER.World({ x: 0.0, y: 0.0, z: 0.0 });
     await init(world);
+    physicsWorld = world;
     renderFrame();
 });
 
@@ -31,13 +32,16 @@ async function init(world: World) {
     const controllerSystem = new ControllerSystem();
     const fireBallSystem = new FireBallSystem();
     const characterMovementSystem = new CharacterMovementSystem();
+    const colliderDebugSystem = new ColliderDebugSystem();
 
     engine.addSystem(renderSystem);
     engine.addSystem(controllerSystem);
     engine.addSystem(fireBallSystem);
     engine.addSystem(characterMovementSystem);
+    engine.addSystem(colliderDebugSystem);
 
     const renderer = RendererInitializer.create(engine);
+    const sceneComponent = engine.getComponents(renderer).get(Scene);
     const scene = engine.getComponents(renderer).get(Scene).three;
 
     RectangularLightInitializer.create(engine, scene);
@@ -53,13 +57,14 @@ async function init(world: World) {
 
     BallInitializer.create(engine, paddle);
 
-    const arena = ArenaInitializer.create(world);
+    const arena = ArenaInitializer.create(engine, world, sceneComponent);
     scene.add(arena);
 
     await Level1Initializer.create(engine, scene);
 }
 
 function renderFrame() {
+    physicsWorld.step();
     engine.update();
     requestAnimationFrame(renderFrame);
 }
