@@ -1,4 +1,4 @@
-import { World } from "@dimforge/rapier3d";
+import { Vector3, World } from "@dimforge/rapier3d";
 import * as THREE from "three";
 import CuboidCollider from "../component/CuboidCollider";
 import Dirty from "../component/Dirty";
@@ -37,7 +37,7 @@ export default class ArenaInitializer {
         arenaTopMesh.position.set(...arenaTopPosition);
 
         const arenaBottomPosition: TripleTuple<number> = [0, 0, 25];
-        const arenaBottomPositionComponent = new Position(...arenaLeftPosition);
+        const arenaBottomPositionComponent = new Position(...arenaBottomPosition);
         arenaBottomMesh.position.set(...arenaBottomPosition);
 
         const arenaFloorPosition: TripleTuple<number> = [0, -1.25, 0];
@@ -45,31 +45,27 @@ export default class ArenaInitializer {
 
         const arenaLeftColliderSize = new Size(...horizontalGeometry);
         const arenaLeftCollider = new CuboidCollider(...horizontalGeometry, world);
-        const arenaLeftColliderDirty = new Dirty();
         arenaLeftCollider.value.setTranslation(arenaLeftPositionComponent.value);
         const leftCollider = engine.addEntity();
-        this.addComponentsToCollider(engine, leftCollider, arenaLeftCollider, arenaLeftPositionComponent, arenaLeftColliderSize, scene, arenaLeftColliderDirty);
+        this.addComponentsToCollider(engine, leftCollider, arenaLeftCollider, arenaLeftPositionComponent, arenaLeftColliderSize, scene);
 
         const arenaRightColliderSize = new Size(...horizontalGeometry);
         const arenaRightCollider = new CuboidCollider(...horizontalGeometry, world);
-        const arenaRightColliderDirty = new Dirty();
         arenaRightCollider.value.setTranslation(arenaRightPositionComponent.value);
         const rightCollider = engine.addEntity();
-        this.addComponentsToCollider(engine, rightCollider, arenaRightCollider, arenaRightPositionComponent, arenaRightColliderSize, scene, arenaRightColliderDirty);
+        this.addComponentsToCollider(engine, rightCollider, arenaRightCollider, arenaRightPositionComponent, arenaRightColliderSize, scene);
 
         const arenaTopColliderSize = new Size(...verticalGeometry);
         const arenaTopCollider = new CuboidCollider(...verticalGeometry, world);
-        const arenaTopColliderDirty = new Dirty();
         arenaTopCollider.value.setTranslation(arenaTopPositionComponent.value);
         const topCollider = engine.addEntity();
-        this.addComponentsToCollider(engine, topCollider, arenaTopCollider, arenaTopPositionComponent, arenaTopColliderSize, scene, arenaTopColliderDirty);
+        this.addComponentsToCollider(engine, topCollider, arenaTopCollider, arenaTopPositionComponent, arenaTopColliderSize, scene);
 
         const arenaBottomColliderSize = new Size(...verticalGeometry);
         const arenaBottomCollider = new CuboidCollider(...verticalGeometry, world);
-        const arenaBottomColliderDirty = new Dirty();
         arenaBottomCollider.value.setTranslation(arenaBottomPositionComponent.value);
         const bottomCollider = engine.addEntity();
-        this.addComponentsToCollider(engine, bottomCollider, arenaBottomCollider, arenaBottomPositionComponent, arenaBottomColliderSize, scene, arenaBottomColliderDirty);
+        this.addComponentsToCollider(engine, bottomCollider, arenaBottomCollider, arenaBottomPositionComponent, arenaBottomColliderSize, scene);
 
         const arena = new THREE.Group();
         arena.add(arenaLeftMesh, arenaRightMesh, arenaTopMesh, arenaBottomMesh, arenaFloorMesh);
@@ -77,11 +73,10 @@ export default class ArenaInitializer {
         return arena;
     }
 
-    public static addComponentsToCollider(engine: Engine, entity: number, collider: CuboidCollider, position: Position, size: Size, scene: Scene, dirty: Dirty): void {
+    public static addComponentsToCollider(engine: Engine, entity: number, collider: CuboidCollider, position: Position, size: Size, scene: Scene): void {
         engine.addComponent(entity, collider);
         engine.addComponent(entity, position);
         engine.addComponent(entity, size);
         engine.addComponent(entity, scene);
-        engine.addComponent(entity, dirty);
     }
 }

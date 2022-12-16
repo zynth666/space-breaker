@@ -1,39 +1,33 @@
 import * as THREE from "three";
-import CuboidCollider from "../component/CuboidCollider";
-import Dirty from "../component/Dirty";
-import Mesh from "../component/Mesh";
+import PhysicsWorld from "../component/PhysicsWorld";
 import Scene from "../component/Scene";
-import Size from "../component/Size";
 import { Entity } from "../entity/types";
 import System from "./System";
 
 export default class ColliderDebugSystem extends System {
-    public requiredComponents = new Set<Function>([CuboidCollider, Size, Scene, Dirty]);
+    private lines: THREE.LineSegments;
+
+    public requiredComponents = new Set<Function>([PhysicsWorld, Scene]);
 
     public update(entities: Set<Entity>): void {
         entities.forEach(entity => {
             const entityContainer = this.engine.getComponents(entity);
-            const collider = entityContainer.get(CuboidCollider);
-            const size = entityContainer.get(Size);
+            const physicsWorld = entityContainer.get(PhysicsWorld);
             const scene = entityContainer.get(Scene);
-            const dirty = entityContainer.get(Dirty);
 
-            if (!dirty.value) {
-                return;
+            if (!this.lines) {
+                let material = new THREE.LineBasicMaterial({
+                    color: 0xffffff,
+                    vertexColors: true
+                });
+                let geometry = new THREE.BufferGeometry();
+                this.lines = new THREE.LineSegments(geometry, material);
+                scene.three.add(this.lines);
             }
 
-            console.log("ColliderDebugSystem: Updating collider debug mesh");
-
-            const boxGeometry = new THREE.BoxGeometry(size.value.x, size.value.y, size.value.z);
-            const boxMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-            boxMaterial.wireframe = true;
-            const mesh = new Mesh(boxGeometry, boxMaterial);
-
-            scene.three.add(mesh.three);
-
-            const translation = collider.value.translation();
-            mesh.three.position.set(translation.x, translation.y, translation.z);
-            dirty.value = false;
+            let buffers = physicsWorld.value.debugRender();
+            this.lines.geometry.setAttribute('position', new THREE.BufferAttribute(buffers.vertices, 3));
+            this.lines.geometry.setAttribute('color', new THREE.BufferAttribute(buffers.colors, 4));
         });
     }
 }

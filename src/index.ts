@@ -15,14 +15,16 @@ import Scene from "./component/Scene";
 import { World } from "@dimforge/rapier3d";
 import RectangularLightInitializer from "./init/RectangularLightInitializer";
 import ColliderDebugSystem from "./system/ColliderDebugSystem";
+import PhysicsWorld from "./component/PhysicsWorld";
 
 const engine = new Engine();
 let physicsWorld: World;
 
 import('@dimforge/rapier3d').then(async RAPIER => {
     const world = new RAPIER.World({ x: 0.0, y: 0.0, z: 0.0 });
-    await init(world);
     physicsWorld = world;
+
+    await init(world);
     renderFrame();
 });
 
@@ -43,6 +45,10 @@ async function init(world: World) {
     const renderer = RendererInitializer.create(engine);
     const sceneComponent = engine.getComponents(renderer).get(Scene);
     const scene = engine.getComponents(renderer).get(Scene).three;
+
+    const worldEntity = engine.addEntity();
+    engine.addComponent(worldEntity, new PhysicsWorld(world));
+    engine.addComponent(worldEntity, sceneComponent);
 
     RectangularLightInitializer.create(engine, scene);
 
