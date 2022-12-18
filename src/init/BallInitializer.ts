@@ -10,7 +10,7 @@ export default class BallInitializer {
         const ballGeometry = new THREE.SphereGeometry(0.75);
         const ballMaterial = new THREE.MeshNormalMaterial();
         const ball = new Mesh(ballGeometry, ballMaterial);
-        ball.three.position.set(0, 0, -1.25);
+        ball.three.position.set(0, 0, -1.3);
 
         const paddleScene = engine.getComponents(paddle).get(Mesh).three;
         paddleScene.add(ball.three);
@@ -20,9 +20,6 @@ export default class BallInitializer {
 
         const ballFireable = new Fireable();
         engine.addComponent(ballEntity, ballFireable);
-
-        const ballForce = new Force(0.5);
-        engine.addComponent(ballEntity, ballForce);
 
         return ballEntity;
     }

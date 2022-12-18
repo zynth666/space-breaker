@@ -40,7 +40,7 @@ export default class ArenaInitializer {
         const arenaBottomPositionComponent = new Position(...arenaBottomPosition);
         arenaBottomMesh.position.set(...arenaBottomPosition);
 
-        const arenaFloorPosition: TripleTuple<number> = [0, -1.25, 0];
+        const arenaFloorPosition: TripleTuple<number> = [0, -1.5, 0];
         arenaFloorMesh.position.set(...arenaFloorPosition);
 
         const arenaLeftColliderSize = new Size(...horizontalGeometry);

@@ -4,7 +4,7 @@ import { Entity } from "../entity/types";
 import KeyboardControls from "./KeyboardControls";
 import System from "./System";
 
-export default class ControllerSystem extends System {
+export default class CharacterControllerSystem extends System {
     public requiredComponents = new Set<Function>([Controller]);
 
     public update(entities: Set<Entity>): void {

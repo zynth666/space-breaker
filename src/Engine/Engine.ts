@@ -9,6 +9,7 @@ export default class Engine {
 
     private nextEntityID = 0
     private entitiesToDestroy = new Array<Entity>()
+    private deltaTime: number = 1;
 
     public addEntity(): Entity {
         let entity = this.nextEntityID;
@@ -56,7 +57,8 @@ export default class Engine {
         this.systems.delete(system);
     }
 
-    public update(): void {
+    public update(deltaTime: number): void {
+        this.setDeltaTime(deltaTime);
         for (let [system, entities] of this.systems.entries()) {
             system.update(entities)
         }
@@ -88,5 +90,13 @@ export default class Engine {
         } else {
             this.systems.get(system).delete(entity);
         }
+    }
+
+    public getDeltaTime(): number {
+        return this.deltaTime;
+    }
+
+    public setDeltaTime(deltaTime: number): void {
+        this.deltaTime = deltaTime;
     }
 }

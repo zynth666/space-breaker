@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import Controller from "../component/Controller";
-import Force from "../component/Force";
 import Mesh from "../component/Mesh";
 import Velocity from "../component/Velocity";
 import Engine from "../engine/Engine";
@@ -11,6 +10,7 @@ import { World } from "@dimforge/rapier3d";
 import type { TripleTuple } from "../types";
 import CuboidCollider from "../component/CuboidCollider";
 import Position from "../component/Position";
+import KinematicPositionBasedRigidBody from "../component/KinematicPositionBasedRigidBody";
 
 export default class PaddleInitializer {
     public static create(engine: Engine, scene: THREE.Scene, world: World): Entity {
@@ -24,12 +24,14 @@ export default class PaddleInitializer {
         scene.add(paddle.three);
 
         const paddleVelocity = new Velocity();
-        const paddleForce = new Force(0.5);
         const paddleController = new Controller({ "ArrowLeft": "left", "ArrowRight": "right" });
 
-        const rigidBody = new KinematicVelocityBasedRigidBody(world);
+        const rigidBody = new KinematicPositionBasedRigidBody(world);
         rigidBody.value.enableCcd(true);
+        rigidBody.value.lockRotations(true, true);
         rigidBody.value.setTranslation(position.value, true);
+        rigidBody.value.lockTranslations(true, true);
+        rigidBody.value.setEnabledTranslations(true, false, false, true);
 
         const characterController = new CharacterController(world);
         const paddleCollider = new CuboidCollider(...dimensions, world, rigidBody.value);
@@ -37,7 +39,6 @@ export default class PaddleInitializer {
         const paddleEntity = engine.addEntity();
         engine.addComponent(paddleEntity, paddle);
         engine.addComponent(paddleEntity, paddleVelocity);
-        engine.addComponent(paddleEntity, paddleForce);
         engine.addComponent(paddleEntity, paddleController);
         engine.addComponent(paddleEntity, rigidBody);
         engine.addComponent(paddleEntity, characterController);

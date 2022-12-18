@@ -3,7 +3,7 @@ import Engine from "./engine/Engine";
 
 import RenderSystem from "./system/RenderSystem";
 import RendererInitializer from "./init/RendererInitializer";
-import ControllerSystem from "./system/ControllerSystem";
+import ControllerSystem from "./system/CharacterControllerSystem";
 import CharacterMovementSystem from "./system/CharacterMovementSystem";
 import PaddleInitializer from "./init/PaddleInitializer";
 import Level1Initializer from "./init/Level1Initializer";
@@ -19,13 +19,14 @@ import PhysicsWorld from "./component/PhysicsWorld";
 
 const engine = new Engine();
 let physicsWorld: World;
+let lastRender = 0;
 
 import('@dimforge/rapier3d').then(async RAPIER => {
     const world = new RAPIER.World({ x: 0.0, y: 0.0, z: 0.0 });
     physicsWorld = world;
 
     await init(world);
-    renderFrame();
+    requestAnimationFrame(renderFrame);
 });
 
 async function init(world: World) {
@@ -69,8 +70,9 @@ async function init(world: World) {
     await Level1Initializer.create(engine, scene);
 }
 
-function renderFrame() {
+function renderFrame(timestamp: number) {
     physicsWorld.step();
-    engine.update();
+    engine.update(timestamp - lastRender);
+    lastRender = timestamp;
     requestAnimationFrame(renderFrame);
 }
