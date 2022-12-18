@@ -1,12 +1,12 @@
-import { ColliderDesc, World } from "@dimforge/rapier3d";
+import { Collider, ColliderDesc, RigidBody, World } from "@dimforge/rapier3d";
 import Component from "./Component";
 
 export default class BallCollider extends Component {
-    public value: ColliderDesc;
+    public value: Collider;
 
-    constructor(size: number, world: World) {
+    constructor(size: number, world: World, rigidBody?: RigidBody) {
         super();
-        this.value = ColliderDesc.ball(size);
-        world.createCollider(this.value);
+        const collider = ColliderDesc.ball(size);
+        world.createCollider(collider, rigidBody);
     }
 }

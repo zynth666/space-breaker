@@ -1,9 +1,7 @@
-import { Vector3 } from "@dimforge/rapier3d";
 import * as THREE from "three";
 import CharacterController from "../component/CharacterController";
 import CuboidCollider from "../component/CuboidCollider";
 import KinematicPositionBasedRigidBody from "../component/KinematicPositionBasedRigidBody";
-import KinematicVelocityBasedRigidBody from "../component/KinematicVelocityBasedRigidBody";
 import Mesh from "../component/Mesh";
 import Position from "../component/Position";
 import Velocity from "../component/Velocity";

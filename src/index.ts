@@ -16,6 +16,7 @@ import { World } from "@dimforge/rapier3d";
 import RectangularLightInitializer from "./init/RectangularLightInitializer";
 import ColliderDebugSystem from "./system/ColliderDebugSystem";
 import PhysicsWorld from "./component/PhysicsWorld";
+import BallMovementSystem from "./system/BallMovementSystem";
 
 const engine = new Engine();
 let physicsWorld: World;
@@ -35,12 +36,14 @@ async function init(world: World) {
     const controllerSystem = new ControllerSystem();
     const fireBallSystem = new FireBallSystem();
     const characterMovementSystem = new CharacterMovementSystem();
+    const ballMovementSystem = new BallMovementSystem();
     const colliderDebugSystem = new ColliderDebugSystem();
 
     engine.addSystem(renderSystem);
     engine.addSystem(controllerSystem);
     engine.addSystem(fireBallSystem);
     engine.addSystem(characterMovementSystem);
+    engine.addSystem(ballMovementSystem);
     engine.addSystem(colliderDebugSystem);
 
     const renderer = RendererInitializer.create(engine);
@@ -62,7 +65,7 @@ async function init(world: World) {
 
     const paddle = PaddleInitializer.create(engine, scene, world);
 
-    BallInitializer.create(engine, paddle);
+    BallInitializer.create(engine, paddle, world);
 
     const arena = ArenaInitializer.create(engine, world, sceneComponent);
     scene.add(arena);

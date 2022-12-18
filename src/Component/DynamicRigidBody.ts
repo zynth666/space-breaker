@@ -5,7 +5,7 @@ export default class DynamicRigidBody extends Component {
     public value: RigidBody;
     public constructor(world: World) {
         super();
-        const rigidBody = RigidBodyDesc.fixed();
+        const rigidBody = RigidBodyDesc.dynamic();
         this.value = world.createRigidBody(rigidBody);
     }
 }
