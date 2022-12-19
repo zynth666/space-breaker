@@ -7,6 +7,6 @@ export default class BallCollider extends Component {
     constructor(size: number, world: World, rigidBody?: RigidBody) {
         super();
         const collider = ColliderDesc.ball(size);
-        world.createCollider(collider, rigidBody);
+        this.value = world.createCollider(collider, rigidBody);
     }
 }

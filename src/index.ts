@@ -17,6 +17,7 @@ import RectangularLightInitializer from "./init/RectangularLightInitializer";
 import ColliderDebugSystem from "./system/ColliderDebugSystem";
 import PhysicsWorld from "./component/PhysicsWorld";
 import BallMovementSystem from "./system/BallMovementSystem";
+import AttachedBallMovementSystem from "./system/AttachedBallMovementSystem";
 
 const engine = new Engine();
 let physicsWorld: World;
@@ -36,6 +37,7 @@ async function init(world: World) {
     const controllerSystem = new ControllerSystem();
     const fireBallSystem = new FireBallSystem();
     const characterMovementSystem = new CharacterMovementSystem();
+    const attachedBallMovementSystem = new AttachedBallMovementSystem();
     const ballMovementSystem = new BallMovementSystem();
     const colliderDebugSystem = new ColliderDebugSystem();
 
@@ -43,6 +45,7 @@ async function init(world: World) {
     engine.addSystem(controllerSystem);
     engine.addSystem(fireBallSystem);
     engine.addSystem(characterMovementSystem);
+    engine.addSystem(attachedBallMovementSystem);
     engine.addSystem(ballMovementSystem);
     engine.addSystem(colliderDebugSystem);
 
