@@ -30,10 +30,10 @@ export default class CharacterControllerSystem extends System {
 
         switch (key) {
             case "left":
-                velocity.vec.setX(-0.5);
+                velocity.vec.setX(-0.4);
                 break;
             case "right":
-                velocity.vec.setX(0.5);
+                velocity.vec.setX(0.4);
                 break;
         }
 

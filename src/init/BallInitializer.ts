@@ -4,7 +4,7 @@ import BallCollider from "../component/BallCollider";
 import CharacterController from "../component/CharacterController";
 import DynamicRigidBody from "../component/DynamicRigidBody";
 import Fireable from "../component/Fireable";
-import KinematicPositionBasedRigidBody from "../component/KinematicPositionBasedRigidBody";
+import GLTFModel from "../component/GLTFModel";
 import Mesh from "../component/Mesh";
 import ParentEntity from "../component/ParentEntity";
 import Position from "../component/Position";
@@ -13,30 +13,25 @@ import { Entity } from "../entity/types";
 import { TripleTuple } from "../types";
 
 export default class BallInitializer {
-    public static create(engine: Engine, paddle: Entity, world: World): Entity {
+    public static create(engine: Engine, scene: THREE.Scene, world: World, player: Entity): Entity {
         const ball = engine.addEntity();
-        const paddleContainer = engine.getComponents(paddle);
-        const paddleScene = paddleContainer.get(Mesh).three;
-        const offset = paddleScene.position.z;
-        const positionVector = new THREE.Vector3(0, 0, -1.3);
-
-        const positionOffset: TripleTuple<number> = [0, 0, offset - 1.3];
-        const positionVectorWithOffset = new THREE.Vector3(...positionOffset);
+        const playerContainer = engine.getComponents(player);
+        const playerScene = playerContainer.get(GLTFModel).three.scene;
 
         const geometry = new THREE.SphereGeometry(0.75);
         const material = new THREE.MeshNormalMaterial();
         const mesh = new Mesh(geometry, material);
-        mesh.three.position.copy(positionVector);
         engine.addComponent(ball, mesh);
 
         const ballFireable = new Fireable();
         engine.addComponent(ball, ballFireable);
 
+        const offset = playerScene.position.z;
+        const positionOffset: TripleTuple<number> = [0, 0, offset];
         const position = new Position(...positionOffset);
         engine.addComponent(ball, position);
 
         const rigidBody = new DynamicRigidBody(world);
-        rigidBody.value.setNextKinematicTranslation(positionVectorWithOffset);
         rigidBody.value.lockTranslations(true, true);
         rigidBody.value.setEnabledTranslations(true, false, true, true);
         engine.addComponent(ball, rigidBody);
@@ -49,10 +44,10 @@ export default class BallInitializer {
         const characterController = new CharacterController(world);
         engine.addComponent(ball, characterController);
 
-        const parentEntity = new ParentEntity(paddle);
+        const parentEntity = new ParentEntity(player);
         engine.addComponent(ball, parentEntity);
 
-        paddleScene.add(mesh.three);
+        scene.add(mesh.three);
 
         return ball;
     }

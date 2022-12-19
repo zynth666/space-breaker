@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import DynamicRigidBody from "../component/DynamicRigidBody";
 import Fireable from "../component/Fireable";
+import GLTFModel from "../component/GLTFModel";
 import Mesh from "../component/Mesh";
 import ParentEntity from "../component/ParentEntity";
 import Velocity from "../component/Velocity";
@@ -19,7 +20,7 @@ export default class FireBallSystem extends System {
             const rigidBody = entityContainer.get(DynamicRigidBody);
             const paddle = entityContainer.get(ParentEntity);
             const paddleComponents = this.engine.getComponents(paddle.value);
-            const paddleMesh = paddleComponents.get(Mesh).three;
+            const paddleMesh = paddleComponents.get(GLTFModel).three.scene;
 
             if (KeyboardControls.isPressed(fireable.fireKey)) {
                 this.engine.removeComponent(entity, Fireable);

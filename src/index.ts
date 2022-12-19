@@ -5,7 +5,7 @@ import RenderSystem from "./system/RenderSystem";
 import RendererInitializer from "./init/RendererInitializer";
 import ControllerSystem from "./system/CharacterControllerSystem";
 import CharacterMovementSystem from "./system/CharacterMovementSystem";
-import PaddleInitializer from "./init/PaddleInitializer";
+import PlayerInitializer from "./init/PlayerInitializer";
 import Level1Initializer from "./init/Level1Initializer";
 import ArenaInitializer from "./init/ArenaInitializer";
 import BallInitializer from "./init/BallInitializer";
@@ -66,9 +66,9 @@ async function init(world: World) {
 
     scene.add(mesh.three); */
 
-    const paddle = PaddleInitializer.create(engine, scene, world);
+    const player = await PlayerInitializer.create(engine, scene, world);
 
-    BallInitializer.create(engine, paddle, world);
+    BallInitializer.create(engine, scene, world, player);
 
     const arena = ArenaInitializer.create(engine, world, sceneComponent);
     scene.add(arena);
