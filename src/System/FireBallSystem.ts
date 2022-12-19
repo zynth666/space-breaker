@@ -25,7 +25,7 @@ export default class FireBallSystem extends System {
                 this.engine.removeComponent(entity, Fireable);
 
                 const forward = new THREE.Vector3(0, 0, -1);
-                const paddleVelocity = paddleComponents.get(Velocity);
+                const paddleVelocity = paddleComponents.get(Velocity) ?? new Velocity();
 
                 const velocity = new Velocity();
                 velocity.vec.copy(forward.add(paddleVelocity.vec).multiplyScalar(10));

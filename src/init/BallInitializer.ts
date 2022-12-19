@@ -45,7 +45,7 @@ export default class BallInitializer {
         collider.value.setRestitution(1.0);
         collider.value.setRestitutionCombineRule(RAPIER.CoefficientCombineRule.Max);
         collider.value.setFriction(-0.01);
-        collider.value.setFrictionCombineRule(RAPIER.CoefficientCombineRule.Min);
+        collider.value.setFrictionCombineRule(RAPIER.CoefficientCombineRule.Average);
         engine.addComponent(ball, collider);
 
         const characterController = new CharacterController(world);
