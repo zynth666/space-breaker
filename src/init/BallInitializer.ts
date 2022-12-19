@@ -6,6 +6,7 @@ import DynamicRigidBody from "../component/DynamicRigidBody";
 import Fireable from "../component/Fireable";
 import KinematicPositionBasedRigidBody from "../component/KinematicPositionBasedRigidBody";
 import Mesh from "../component/Mesh";
+import ParentEntity from "../component/ParentEntity";
 import Position from "../component/Position";
 import Engine from "../engine/Engine";
 import { Entity } from "../entity/types";
@@ -49,6 +50,9 @@ export default class BallInitializer {
 
         const characterController = new CharacterController(world);
         engine.addComponent(ball, characterController);
+
+        const parentEntity = new ParentEntity(paddle);
+        engine.addComponent(ball, parentEntity);
 
         paddleScene.add(mesh.three);
 
