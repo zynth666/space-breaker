@@ -30,6 +30,7 @@ export default class FireBallSystem extends System {
                 const velocity = new Velocity();
                 velocity.vec.copy(forward.add(paddleVelocity.vec).multiplyScalar(10));
                 rigidBody.value.setLinvel(velocity.vec, true);
+                rigidBody.value.setAngvel(velocity.vec, true);
                 this.engine.addComponent(entity, velocity);
 
                 const scene = paddleMesh.parent;

@@ -1,3 +1,4 @@
+import * as THREE from "three";
 import BallCollider from "../component/BallCollider";
 import DynamicRigidBody from "../component/DynamicRigidBody";
 import Mesh from "../component/Mesh";
@@ -15,6 +16,14 @@ export default class BallMovementSystem extends System {
             const rigidBody = entityContainer.get(DynamicRigidBody);
             const mesh = entityContainer.get(Mesh).three;
             mesh.position.set(rigidBody.value.translation().x, rigidBody.value.translation().y, rigidBody.value.translation().z);
+
+            const linvelVector = new THREE.Vector3(rigidBody.value.linvel().x, rigidBody.value.linvel().y, rigidBody.value.linvel().z);
+
+            if (linvelVector.length() > 25) {
+                rigidBody.value.setLinvel(linvelVector.normalize().multiplyScalar(25), true);
+                const collider = entityContainer.get(BallCollider).value;
+                collider.setRestitution(1);
+            }
         });
     }
 }
