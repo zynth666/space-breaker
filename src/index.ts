@@ -30,7 +30,7 @@ let lastRender = 0;
 let scene: THREE.Scene;
 
 import('@dimforge/rapier3d').then(async RAPIER => {
-    const world = new RAPIER.World({ x: 0.0, y: 0.0, z: .1 });
+    const world = new RAPIER.World({ x: 0.0, y: 0.0, z: .5 });
     physicsWorld = world;
     await init(world);
     eventQueue = addEventQueueEntity();
