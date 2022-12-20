@@ -12,7 +12,7 @@ import BallInitializer from "./init/BallInitializer";
 import FireBallSystem from "./system/FireBallSystem";
 import KeyboardControls from "./system/KeyboardControls";
 import Scene from "./component/Scene";
-import { World } from "@dimforge/rapier3d";
+import RAPIER, { World } from "@dimforge/rapier3d";
 import RectangularLightInitializer from "./init/RectangularLightInitializer";
 import ColliderDebugSystem from "./system/ColliderDebugSystem";
 import PhysicsWorld from "./component/PhysicsWorld";
@@ -77,7 +77,11 @@ async function init(world: World) {
 }
 
 function renderFrame(timestamp: number) {
-    physicsWorld.step();
+    const eventQueue = new RAPIER.EventQueue(true);
+    physicsWorld.step(eventQueue);
+    eventQueue.drainCollisionEvents((handle1, handle2, started) => {
+        console.log("Collision between", handle1, handle2, started);
+    });
     engine.update(timestamp - lastRender);
     lastRender = timestamp;
     requestAnimationFrame(renderFrame);
