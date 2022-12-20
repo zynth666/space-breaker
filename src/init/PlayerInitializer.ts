@@ -14,6 +14,8 @@ import GLTFInitializer from "./GLTFInitializer";
 import spaceshipUrl from "../assets/gltf/Spaceship.gltf";
 import GLTFModel from "../component/GLTFModel";
 import { Mesh } from "three";
+import Sound from "../component/Sound";
+import swivelUrl from "../assets/audio/swivel-long.wav";
 
 export default class PlayerInitializer {
     public static async create(engine: Engine, scene: THREE.Scene, world: World): Promise<Entity> {
@@ -47,6 +49,7 @@ export default class PlayerInitializer {
         engine.addComponent(playerEntity, characterController);
         engine.addComponent(playerEntity, playerCollider);
         engine.addComponent(playerEntity, position);
+        engine.addComponent(playerEntity, new Sound(swivelUrl));
 
         return playerEntity;
     }

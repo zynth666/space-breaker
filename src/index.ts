@@ -21,6 +21,7 @@ import AttachedBallMovementSystem from "./system/AttachedBallMovementSystem";
 import HitDetectionSystem from "./system/HitDetectionSystem";
 import RapierEventQueue from "./component/RapierEventQueue";
 import HitSoundSystem from "./system/HitSoundSystem";
+import CharacterSoundSystem from "./system/CharacterSoundSystem";
 
 const engine = new Engine();
 let physicsWorld: World;
@@ -29,7 +30,7 @@ let lastRender = 0;
 let scene: THREE.Scene;
 
 import('@dimforge/rapier3d').then(async RAPIER => {
-    const world = new RAPIER.World({ x: 0.0, y: 0.0, z: .1 });
+    const world = new RAPIER.World({ x: 0.0, y: 0.0, z: .5 });
     physicsWorld = world;
     await init(world);
     eventQueue = addEventQueueEntity();
@@ -47,6 +48,7 @@ async function init(world: World) {
     const colliderDebugSystem = new ColliderDebugSystem();
     const hitDetectionSystem = new HitDetectionSystem();
     const hitSoundSystem = new HitSoundSystem();
+    const characterSoundSystem = new CharacterSoundSystem();
 
     engine.addSystem(renderSystem);
     engine.addSystem(controllerSystem);
@@ -57,6 +59,7 @@ async function init(world: World) {
     engine.addSystem(hitDetectionSystem);
     engine.addSystem(colliderDebugSystem);
     engine.addSystem(hitSoundSystem);
+    engine.addSystem(characterSoundSystem);
 
     const renderer = RendererInitializer.create(engine);
     const sceneComponent = engine.getComponents(renderer).get(Scene);
