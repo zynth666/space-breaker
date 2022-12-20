@@ -1,4 +1,8 @@
+import { World } from "@dimforge/rapier3d";
+import BallCollider from "../component/BallCollider";
+import Breakable from "../component/Breakable";
 import CuboidCollider from "../component/CuboidCollider";
+import Hit from "../component/Hit";
 import Mesh from "../component/Mesh";
 import PhysicsWorld from "../component/PhysicsWorld";
 import RapierEventQueue from "../component/RapierEventQueue";
@@ -21,24 +25,31 @@ export default class HitDetectionSystem extends System {
                     return;
                 }
 
-                const hitEntity = this.getEntityByColliderHandle(handle2);
+                const entity1 = this.getEntityByColliderHandle(handle1);
+                const entity2 = this.getEntityByColliderHandle(handle2);
 
-                if (hitEntity === -1) {
-                    return;
-                }
+                console.log("HitDetectionSystem: Hit detected between entities: " + entity1 + " and " + entity2);
 
-                const components = this.engine.getComponents(hitEntity);
-                world.removeCollider(components.get(CuboidCollider).value, true);
-                scene.remove(components.get(Mesh).three);
-                this.engine.removeEntity(hitEntity);
+                this.setHitOnEntity(entity1);
+                this.setHitOnEntity(entity2);
+
+                this.removeEntityIfBreakable(entity1, world, scene);
+                this.removeEntityIfBreakable(entity2, world, scene);
             });
         });
     }
 
-    public getEntityByColliderHandle(handle: number): Entity {
+    private getEntityByColliderHandle(handle: number): Entity {
         for (let [entity, container] of this.engine.getEntities()) {
             if (container.has(CuboidCollider)) {
                 const collider = container.get(CuboidCollider).value;
+
+                if (collider.handle === handle) {
+                    return entity;
+                }
+            } else if (container.has(BallCollider)) {
+                const collider = container.get(BallCollider).value;
+
                 if (collider.handle === handle) {
                     return entity;
                 }
@@ -46,5 +57,31 @@ export default class HitDetectionSystem extends System {
         }
 
         return -1;
+    }
+
+    private setHitOnEntity(entity: Entity): void {
+        if (entity === -1) {
+            return;
+        }
+
+        const components = this.engine.getComponents(entity);
+        if (components.has(Hit)) {
+            components.get(Hit).value = true;
+        }
+    }
+
+    private removeEntityIfBreakable(entity: Entity, world: World, scene: THREE.Scene): void {
+        if (entity === -1) {
+            return;
+        }
+
+        const components = this.engine.getComponents(entity);
+        if (!components.has(Breakable)) {
+            return;
+        }
+
+        world.removeCollider(components.get(CuboidCollider).value, true);
+        scene.remove(components.get(Mesh).three);
+        this.engine.removeEntity(entity);
     }
 } 

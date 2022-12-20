@@ -20,6 +20,7 @@ import BallMovementSystem from "./system/BallMovementSystem";
 import AttachedBallMovementSystem from "./system/AttachedBallMovementSystem";
 import HitDetectionSystem from "./system/HitDetectionSystem";
 import RapierEventQueue from "./component/RapierEventQueue";
+import HitSoundSystem from "./system/HitSoundSystem";
 
 const engine = new Engine();
 let physicsWorld: World;
@@ -45,6 +46,7 @@ async function init(world: World) {
     const ballMovementSystem = new BallMovementSystem();
     const colliderDebugSystem = new ColliderDebugSystem();
     const hitDetectionSystem = new HitDetectionSystem();
+    const hitSoundSystem = new HitSoundSystem();
 
     engine.addSystem(renderSystem);
     engine.addSystem(controllerSystem);
@@ -54,6 +56,7 @@ async function init(world: World) {
     engine.addSystem(ballMovementSystem);
     engine.addSystem(hitDetectionSystem);
     engine.addSystem(colliderDebugSystem);
+    engine.addSystem(hitSoundSystem);
 
     const renderer = RendererInitializer.create(engine);
     const sceneComponent = engine.getComponents(renderer).get(Scene);

@@ -8,9 +8,12 @@ import GLTFModel from "../component/GLTFModel";
 import Mesh from "../component/Mesh";
 import ParentEntity from "../component/ParentEntity";
 import Position from "../component/Position";
+import Sound from "../component/Sound";
 import Engine from "../engine/Engine";
 import { Entity } from "../entity/types";
 import { TripleTuple } from "../types";
+import ballHitUrl from "../assets/audio/ball-hit.wav";
+import Hit from "../component/Hit";
 
 export default class BallInitializer {
     public static create(engine: Engine, scene: THREE.Scene, world: World, player: Entity): Entity {
@@ -39,6 +42,7 @@ export default class BallInitializer {
         const collider = new BallCollider(0.75, world, rigidBody.value);
         collider.value.setRestitution(1.05);
         collider.value.setRestitutionCombineRule(RAPIER.CoefficientCombineRule.Max);
+        collider.value.setActiveEvents(RAPIER.ActiveEvents.COLLISION_EVENTS);
         engine.addComponent(ball, collider);
 
         const characterController = new CharacterController(world);
@@ -46,6 +50,12 @@ export default class BallInitializer {
 
         const parentEntity = new ParentEntity(player);
         engine.addComponent(ball, parentEntity);
+
+        const sound = new Sound(ballHitUrl);
+        engine.addComponent(ball, sound);
+
+        const hit = new Hit();
+        engine.addComponent(ball, hit);
 
         scene.add(mesh.three);
 

@@ -9,6 +9,10 @@ import RAPIER, { World } from "@dimforge/rapier3d";
 import { Entity } from "../entity/types";
 import { Mesh } from "three";
 import MeshComponent from "../component/Mesh";
+import Breakable from "../component/Breakable";
+import Hit from "../component/Hit";
+import breakCubeUrl from "../assets/audio/break-cube.wav";
+import Sound from "../component/Sound";
 
 export default class Level1Initializer {
     public static async create(engine: Engine, scene: THREE.Scene, world: World) {
@@ -44,5 +48,8 @@ export default class Level1Initializer {
         collider.value.setActiveEvents(RAPIER.ActiveEvents.COLLISION_EVENTS);
         collider.value.setTranslation(position);
         engine.addComponent(entity, collider);
+        engine.addComponent(entity, new Breakable());
+        engine.addComponent(entity, new Hit());
+        engine.addComponent(entity, new Sound(breakCubeUrl));
     }
 }
