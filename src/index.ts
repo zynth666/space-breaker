@@ -1,81 +1,88 @@
 import "./assets/sass/styles.scss";
-import Ammo from 'ammojs-typed';
 import Engine from "./engine/Engine";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-
 import RenderSystem from "./system/RenderSystem";
-import SceneInitializer from "./init/SceneInitializer";
 import RendererInitializer from "./init/RendererInitializer";
-import CameraInitializer from "./init/CameraInitializer";
-import HemisphereLightInitializer from "./init/HemisphereLightInitializer";
-import DirectionalLightInitializer from "./init/DirectionalLightInitializer";
-import ControllerSystem from "./system/ControllerSystem";
-import MovementSystem from "./system/MovementSystem";
-import PaddleInitializer from "./init/PaddleInitializer";
+import ControllerSystem from "./system/CharacterControllerSystem";
+import CharacterMovementSystem from "./system/CharacterMovementSystem";
+import PlayerInitializer from "./init/PlayerInitializer";
 import Level1Initializer from "./init/Level1Initializer";
 import ArenaInitializer from "./init/ArenaInitializer";
 import BallInitializer from "./init/BallInitializer";
 import FireBallSystem from "./system/FireBallSystem";
 import KeyboardControls from "./system/KeyboardControls";
+import Scene from "./component/Scene";
+import RAPIER, { World } from "@dimforge/rapier3d";
+import RectangularLightInitializer from "./init/RectangularLightInitializer";
+import ColliderDebugSystem from "./system/ColliderDebugSystem";
+import PhysicsWorld from "./component/PhysicsWorld";
+import BallMovementSystem from "./system/BallMovementSystem";
+import AttachedBallMovementSystem from "./system/AttachedBallMovementSystem";
 
 const engine = new Engine();
+let physicsWorld: World;
+let lastRender = 0;
 
-Ammo(Ammo).then(async () => {
-    await init();
-    renderFrame();
+import('@dimforge/rapier3d').then(async RAPIER => {
+    const world = new RAPIER.World({ x: 0.0, y: 0.0, z: 0.0 });
+    physicsWorld = world;
+
+    await init(world);
+    requestAnimationFrame(renderFrame);
 });
 
-async function init() {
+async function init(world: World) {
     KeyboardControls.init();
     const renderSystem = new RenderSystem();
     const controllerSystem = new ControllerSystem();
     const fireBallSystem = new FireBallSystem();
-    const movementSystem = new MovementSystem();
+    const characterMovementSystem = new CharacterMovementSystem();
+    const attachedBallMovementSystem = new AttachedBallMovementSystem();
+    const ballMovementSystem = new BallMovementSystem();
+    const colliderDebugSystem = new ColliderDebugSystem();
 
     engine.addSystem(renderSystem);
     engine.addSystem(controllerSystem);
     engine.addSystem(fireBallSystem);
-    engine.addSystem(movementSystem);
+    engine.addSystem(characterMovementSystem);
+    engine.addSystem(attachedBallMovementSystem);
+    engine.addSystem(ballMovementSystem);
+    engine.addSystem(colliderDebugSystem);
 
-    const rendererComponent = RendererInitializer.create();
-    const scene = SceneInitializer.create();
-    const cameraComponent = CameraInitializer.create();
+    const renderer = RendererInitializer.create(engine);
+    const sceneComponent = engine.getComponents(renderer).get(Scene);
+    const scene = engine.getComponents(renderer).get(Scene).three;
 
-    const renderEntity = engine.addEntity();
-    engine.addComponent(renderEntity, rendererComponent);
-    engine.addComponent(renderEntity, scene);
-    engine.addComponent(renderEntity, cameraComponent);
+    const worldEntity = engine.addEntity();
+    engine.addComponent(worldEntity, new PhysicsWorld(world));
+    engine.addComponent(worldEntity, sceneComponent);
 
-
-    new OrbitControls(cameraComponent.three, rendererComponent.three.domElement);
-
-    const hemiLight = HemisphereLightInitializer.create(engine);
-    scene.three.add(hemiLight.three);
-
-    const dirLight = DirectionalLightInitializer.create(engine);
-    scene.three.add(dirLight.three);
+    RectangularLightInitializer.create(engine, scene);
 
     /* const dustGeometry = new THREE.DodecahedronGeometry(1, 0);
     const dustMaterial = new THREE.MeshPhongMaterial({ color: 0x010101 });
     const mesh = new Mesh(dustGeometry, dustMaterial);
     mesh.three.position.set(30, 0, 0);
 
-    scene.three.add(mesh.three); */
+    scene.add(mesh.three); */
 
-    const paddle = PaddleInitializer.create(engine);
-    scene.three.add(paddle.three);
+    const player = await PlayerInitializer.create(engine, scene, world);
 
-    const ball = BallInitializer.create(engine);
-    paddle.three.add(ball.three);
+    BallInitializer.create(engine, scene, world, player);
 
-    const arena = ArenaInitializer.create();
-    scene.three.add(arena);
+    const arena = ArenaInitializer.create(engine, world, sceneComponent);
+    scene.add(arena);
 
-    await Level1Initializer.create(scene);
+    await Level1Initializer.create(engine, scene, world);
 }
 
-function renderFrame() {
-    engine.update();
+function renderFrame(timestamp: number) {
+    const eventQueue = new RAPIER.EventQueue(true);
+    physicsWorld.step(eventQueue);
+    eventQueue.drainCollisionEvents((handle1, handle2, started) => {
+        console.log("Collision between", handle1, handle2, started);
+    });
+    engine.update(timestamp - lastRender);
+    lastRender = timestamp;
     requestAnimationFrame(renderFrame);
 }

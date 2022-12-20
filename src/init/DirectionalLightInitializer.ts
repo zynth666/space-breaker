@@ -1,31 +1,31 @@
 import * as THREE from "three";
 import DirectionalLight from "../component/DirectionalLight";
 import Engine from "../engine/Engine";
+import { Entity } from "../entity/types";
 
 export default class DirectionalLightInitializer {
-    public static create(engine: Engine): DirectionalLight {
-        const dirLight = new DirectionalLight(0xffffff, 10);
-        dirLight.three.color.setHSL(0.1, 1, 0.95);
-        dirLight.three.position.set(-1, 1.75, 1);
-        dirLight.three.position.multiplyScalar(100);
+    public static create(engine: Engine, scene: THREE.Scene) {
+        const backLight = new DirectionalLight(0xffffff, 1);
+        backLight.three.position.set(-5, 20, -20);
+        backLight.three.target.position.set(0, 0, -10);
 
-        dirLight.three.castShadow = true;
+        scene.add(backLight.three);
 
-        dirLight.three.shadow.mapSize.width = 2048;
-        dirLight.three.shadow.mapSize.height = 2048;
+        const backLightHelper = new THREE.DirectionalLightHelper(backLight.three, 5);
+        scene.add(backLightHelper);
 
-        let d = 50;
+        const backLightEntity = engine.addEntity();
+        engine.addComponent(backLightEntity, backLight);
 
-        dirLight.three.shadow.camera.left = -d;
-        dirLight.three.shadow.camera.right = d;
-        dirLight.three.shadow.camera.top = d;
-        dirLight.three.shadow.camera.bottom = -d;
+        const frontLight = new DirectionalLight(0xffffff, 1);
+        frontLight.three.position.set(5, 10, 40);
 
-        dirLight.three.shadow.camera.far = 13500;
+        scene.add(frontLight.three);
 
-        const dirLightEntity = engine.addEntity();
-        engine.addComponent(dirLightEntity, dirLight);
+        const frontLightHelper = new THREE.DirectionalLightHelper(frontLight.three, 5);
+        scene.add(frontLightHelper);
 
-        return dirLight;
+        const frontLightEntity = engine.addEntity();
+        engine.addComponent(frontLightEntity, frontLight);
     }
 }
