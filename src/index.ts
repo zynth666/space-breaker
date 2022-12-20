@@ -73,7 +73,7 @@ async function init(world: World) {
     const arena = ArenaInitializer.create(engine, world, sceneComponent);
     scene.add(arena);
 
-    await Level1Initializer.create(engine, scene);
+    await Level1Initializer.create(engine, scene, world);
 }
 
 function renderFrame(timestamp: number) {
