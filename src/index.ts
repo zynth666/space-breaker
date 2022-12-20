@@ -18,16 +18,21 @@ import ColliderDebugSystem from "./system/ColliderDebugSystem";
 import PhysicsWorld from "./component/PhysicsWorld";
 import BallMovementSystem from "./system/BallMovementSystem";
 import AttachedBallMovementSystem from "./system/AttachedBallMovementSystem";
+import HitDetectionSystem from "./system/HitDetectionSystem";
+import RapierEventQueue from "./component/RapierEventQueue";
+import HitSoundSystem from "./system/HitSoundSystem";
 
 const engine = new Engine();
 let physicsWorld: World;
+let eventQueue: RAPIER.EventQueue;
 let lastRender = 0;
+let scene: THREE.Scene;
 
 import('@dimforge/rapier3d').then(async RAPIER => {
-    const world = new RAPIER.World({ x: 0.0, y: 0.0, z: 0.0 });
+    const world = new RAPIER.World({ x: 0.0, y: 0.0, z: .1 });
     physicsWorld = world;
-
     await init(world);
+    eventQueue = addEventQueueEntity();
     requestAnimationFrame(renderFrame);
 });
 
@@ -40,6 +45,8 @@ async function init(world: World) {
     const attachedBallMovementSystem = new AttachedBallMovementSystem();
     const ballMovementSystem = new BallMovementSystem();
     const colliderDebugSystem = new ColliderDebugSystem();
+    const hitDetectionSystem = new HitDetectionSystem();
+    const hitSoundSystem = new HitSoundSystem();
 
     engine.addSystem(renderSystem);
     engine.addSystem(controllerSystem);
@@ -47,11 +54,13 @@ async function init(world: World) {
     engine.addSystem(characterMovementSystem);
     engine.addSystem(attachedBallMovementSystem);
     engine.addSystem(ballMovementSystem);
+    engine.addSystem(hitDetectionSystem);
     engine.addSystem(colliderDebugSystem);
+    engine.addSystem(hitSoundSystem);
 
     const renderer = RendererInitializer.create(engine);
     const sceneComponent = engine.getComponents(renderer).get(Scene);
-    const scene = engine.getComponents(renderer).get(Scene).three;
+    scene = engine.getComponents(renderer).get(Scene).three;
 
     const worldEntity = engine.addEntity();
     engine.addComponent(worldEntity, new PhysicsWorld(world));
@@ -77,12 +86,18 @@ async function init(world: World) {
 }
 
 function renderFrame(timestamp: number) {
-    const eventQueue = new RAPIER.EventQueue(true);
     physicsWorld.step(eventQueue);
-    eventQueue.drainCollisionEvents((handle1, handle2, started) => {
-        console.log("Collision between", handle1, handle2, started);
-    });
     engine.update(timestamp - lastRender);
     lastRender = timestamp;
     requestAnimationFrame(renderFrame);
+}
+
+function addEventQueueEntity() {
+    const eventQueue = new RAPIER.EventQueue(true);
+    const entity = engine.addEntity();
+    engine.addComponent(entity, new RapierEventQueue(eventQueue));
+    engine.addComponent(entity, new PhysicsWorld(physicsWorld));
+    engine.addComponent(entity, new Scene(scene));
+
+    return eventQueue;
 }

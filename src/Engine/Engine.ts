@@ -99,4 +99,8 @@ export default class Engine {
     public setDeltaTime(deltaTime: number): void {
         this.deltaTime = deltaTime;
     }
+
+    public getEntities(): Map<Entity, ComponentContainer> {
+        return this.entities;
+    }
 }

@@ -30,4 +30,8 @@ export default class ComponentContainer {
     public delete(componentClass: Function): void {
         this.map.delete(componentClass);
     }
+
+    public clear(): void {
+        this.map.clear();
+    }
 }

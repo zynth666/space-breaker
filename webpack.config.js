@@ -28,6 +28,10 @@ module.exports = {
                 test: /\.gltf/,
                 type: 'asset/resource',
             },
+            {
+                test: /\.wav/,
+                type: 'asset/resource',
+            },
         ],
     },
     devServer: {
