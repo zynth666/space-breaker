@@ -18,10 +18,12 @@ export default class BallMovementSystem extends System {
             mesh.position.set(rigidBody.value.translation().x, rigidBody.value.translation().y, rigidBody.value.translation().z);
             const linvelVector = new THREE.Vector3(rigidBody.value.linvel().x, rigidBody.value.linvel().y, rigidBody.value.linvel().z);
 
-            if (linvelVector.length() > 25) {
-                rigidBody.value.setLinvel(linvelVector.normalize().multiplyScalar(25), true);
-                const collider = entityContainer.get(BallCollider).value;
-                collider.setRestitution(1);
+            if (linvelVector.length() > 20) {
+                rigidBody.value.setLinvel(linvelVector.normalize().multiplyScalar(20), true);
+            }
+
+            if (linvelVector.length() < 10) {
+                rigidBody.value.setLinvel(linvelVector.normalize().multiplyScalar(10), true);
             }
         });
     }

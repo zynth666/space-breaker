@@ -37,6 +37,7 @@ export default class BallInitializer {
         const rigidBody = new DynamicRigidBody(world);
         rigidBody.value.lockTranslations(true, true);
         rigidBody.value.setEnabledTranslations(true, false, true, true);
+        rigidBody.value.setGravityScale(0, true);
         engine.addComponent(ball, rigidBody);
 
         const collider = new BallCollider(0.75, world, rigidBody.value);
