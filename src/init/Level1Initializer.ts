@@ -44,6 +44,5 @@ export default class Level1Initializer {
         collider.value.setActiveEvents(RAPIER.ActiveEvents.COLLISION_EVENTS);
         collider.value.setTranslation(position);
         engine.addComponent(entity, collider);
-        console.log(collider.value.handle)
     }
 }
