@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import Animation from "../component/Animation";
 import DynamicRigidBody from "../component/DynamicRigidBody";
 import Fireable from "../component/Fireable";
 import GLTFModel from "../component/GLTFModel";
@@ -18,23 +19,26 @@ export default class FireBallSystem extends System {
             const fireable = entityContainer.get(Fireable);
             const mesh = entityContainer.get(Mesh).three;
             const rigidBody = entityContainer.get(DynamicRigidBody);
-            const paddle = entityContainer.get(ParentEntity);
-            const paddleComponents = this.engine.getComponents(paddle.value);
-            const paddleMesh = paddleComponents.get(GLTFModel).three.scene;
+            const player = entityContainer.get(ParentEntity);
+            const playerComponents = this.engine.getComponents(player.value);
+            const playerMesh = playerComponents.get(GLTFModel).three.scene;
+            const playerAnimation = playerComponents.get(Animation);
 
             if (KeyboardControls.isPressed(fireable.fireKey)) {
                 this.engine.removeComponent(entity, Fireable);
 
                 const forward = new THREE.Vector3(0, 0, -1);
-                const paddleVelocity = paddleComponents.get(Velocity) ?? new Velocity();
+                const playerVelocity = playerComponents.get(Velocity) ?? new Velocity();
 
                 const velocity = new Velocity();
-                velocity.vec.copy(forward.add(paddleVelocity.vec).multiplyScalar(10));
+                velocity.vec.copy(forward.add(playerVelocity.vec).multiplyScalar(10));
                 rigidBody.value.setLinvel(velocity.vec, true);
                 rigidBody.value.setGravityScale(1, true);
                 this.engine.addComponent(entity, velocity);
 
-                const scene = paddleMesh.parent;
+                playerAnimation.name = "2 Start";
+
+                const scene = playerMesh.parent;
                 scene.attach(mesh);
             }
         });

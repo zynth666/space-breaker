@@ -22,6 +22,7 @@ import HitDetectionSystem from "./system/HitDetectionSystem";
 import RapierEventQueue from "./component/RapierEventQueue";
 import HitSoundSystem from "./system/HitSoundSystem";
 import CharacterSoundSystem from "./system/CharacterSoundSystem";
+import CharacterAnimationSystem from "./system/CharacterAnimationSystem";
 
 const engine = new Engine();
 let physicsWorld: World;
@@ -49,6 +50,7 @@ async function init(world: World) {
     const hitDetectionSystem = new HitDetectionSystem();
     const hitSoundSystem = new HitSoundSystem();
     const characterSoundSystem = new CharacterSoundSystem();
+    const characterAnimationSystem = new CharacterAnimationSystem();
 
     engine.addSystem(renderSystem);
     engine.addSystem(controllerSystem);
@@ -60,6 +62,7 @@ async function init(world: World) {
     engine.addSystem(colliderDebugSystem);
     engine.addSystem(hitSoundSystem);
     engine.addSystem(characterSoundSystem);
+    engine.addSystem(characterAnimationSystem);
 
     const renderer = RendererInitializer.create(engine);
     const sceneComponent = engine.getComponents(renderer).get(Scene);
