@@ -8,7 +8,7 @@ import skyFront from "../assets/images/corona_ft.png";
 import skyBack from "../assets/images/corona_bk.png";
 
 export default class SceneInitializer {
-    public static create(): Scene {
+    public static create(envMap: THREE.Texture): Scene {
         const scene = new THREE.Scene();
         try {
             /* const loader = new THREE.CubeTextureLoader();
@@ -23,6 +23,7 @@ export default class SceneInitializer {
             scene.background = texture;
             scene.background.encoding = THREE.sRGBEncoding; */
 
+            scene.environment = envMap;
             scene.background = new THREE.Color(0x000000);
 
             return new Scene(scene);

@@ -5,6 +5,7 @@ import { Entity } from "../entity/types";
 import CameraInitializer from "./CameraInitializer";
 import SceneInitializer from "./SceneInitializer";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 
 export default class RendererInitializer {
     public static create(engine: Engine): Entity {
@@ -12,9 +13,15 @@ export default class RendererInitializer {
         const webGlRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, canvas });
         webGlRenderer.setClearColor(0xbfd1e5);
         webGlRenderer.outputEncoding = THREE.sRGBEncoding;
+        webGlRenderer.toneMapping = THREE.ACESFilmicToneMapping;
         webGlRenderer.shadowMap.enabled = true;
 
-        const scene = SceneInitializer.create();
+        const pmremGenerator = new THREE.PMREMGenerator(webGlRenderer);
+        pmremGenerator.compileEquirectangularShader();
+
+        const envMap = pmremGenerator.fromScene(new RoomEnvironment()).texture;
+
+        const scene = SceneInitializer.create(envMap);
         const cameraComponent = CameraInitializer.create();
 
         const rendererComponent = new Renderer(webGlRenderer);
@@ -22,7 +29,7 @@ export default class RendererInitializer {
         engine.addComponent(renderEntity, rendererComponent);
         engine.addComponent(renderEntity, scene);
         engine.addComponent(renderEntity, cameraComponent);
-        //new OrbitControls(cameraComponent.three, rendererComponent.three.domElement);
+        new OrbitControls(cameraComponent.three, rendererComponent.three.domElement);
         return renderEntity;
     }
 }

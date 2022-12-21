@@ -27,13 +27,12 @@ export default class CharacterAnimationSystem extends System {
             const clip = THREE.AnimationClip.findByName(clips, animation.name);
             const action = mixer.three.clipAction(clip);
 
-
             if (this.lastAnimationAction) {
-                this.lastAnimationAction.fadeOut(1);
+                this.lastAnimationAction.fadeOut(0.3);
             }
 
+            action.reset();
             action.play();
-
             this.lastAnimationAction = action;
         });
     }

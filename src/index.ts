@@ -24,6 +24,10 @@ import CharacterSoundSystem from "./system/CharacterSoundSystem";
 import CharacterAnimationSystem from "./system/CharacterAnimationSystem";
 import DirectionalLightInitializer from "./init/DirectionalLightInitializer";
 import RectangularLightInitializer from "./init/RectangularLightInitializer";
+import AmbientLightInitializer from "./init/AmbientLightInitializer";
+import titleTrackUrl from "./assets/audio/quentins-quest-theme-v2-drums.wav";
+import * as THREE from "three";
+import Mesh from "./component/Mesh";
 
 const engine = new Engine();
 let physicsWorld: World;
@@ -40,6 +44,12 @@ import('@dimforge/rapier3d').then(async RAPIER => {
 });
 
 async function init(world: World) {
+    /* const titleTrack = new Audio(titleTrackUrl);
+
+    titleTrack.addEventListener("canplaythrough", () => {
+        titleTrack.play();
+    }); */
+
     KeyboardControls.init();
     const renderSystem = new RenderSystem();
     const controllerSystem = new ControllerSystem();
@@ -76,12 +86,13 @@ async function init(world: World) {
     /* const dustGeometry = new THREE.DodecahedronGeometry(1, 0);
     const dustMaterial = new THREE.MeshPhongMaterial({ color: 0x010101 });
     const mesh = new Mesh(dustGeometry, dustMaterial);
-    mesh.three.position.set(30, 0, 0);
+    mesh.three.position.set(0, 0, 0);
 
     scene.add(mesh.three); */
 
+    AmbientLightInitializer.create(scene);
     DirectionalLightInitializer.create(scene);
-    RectangularLightInitializer.create(scene);
+    //RectangularLightInitializer.create(scene);
 
     const player = await PlayerInitializer.create(engine, scene, world);
 
