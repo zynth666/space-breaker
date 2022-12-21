@@ -13,7 +13,6 @@ import FireBallSystem from "./system/FireBallSystem";
 import KeyboardControls from "./system/KeyboardControls";
 import Scene from "./component/Scene";
 import RAPIER, { World } from "@dimforge/rapier3d";
-import RectangularLightInitializer from "./init/RectangularLightInitializer";
 import ColliderDebugSystem from "./system/ColliderDebugSystem";
 import PhysicsWorld from "./component/PhysicsWorld";
 import BallMovementSystem from "./system/BallMovementSystem";
@@ -23,6 +22,8 @@ import RapierEventQueue from "./component/RapierEventQueue";
 import HitSoundSystem from "./system/HitSoundSystem";
 import CharacterSoundSystem from "./system/CharacterSoundSystem";
 import CharacterAnimationSystem from "./system/CharacterAnimationSystem";
+import DirectionalLightInitializer from "./init/DirectionalLightInitializer";
+import RectangularLightInitializer from "./init/RectangularLightInitializer";
 
 const engine = new Engine();
 let physicsWorld: World;
@@ -72,8 +73,6 @@ async function init(world: World) {
     engine.addComponent(worldEntity, new PhysicsWorld(world));
     engine.addComponent(worldEntity, sceneComponent);
 
-    RectangularLightInitializer.create(engine, scene);
-
     /* const dustGeometry = new THREE.DodecahedronGeometry(1, 0);
     const dustMaterial = new THREE.MeshPhongMaterial({ color: 0x010101 });
     const mesh = new Mesh(dustGeometry, dustMaterial);
@@ -81,12 +80,14 @@ async function init(world: World) {
 
     scene.add(mesh.three); */
 
+    DirectionalLightInitializer.create(scene);
+    RectangularLightInitializer.create(scene);
+
     const player = await PlayerInitializer.create(engine, scene, world);
 
     BallInitializer.create(engine, scene, world, player);
 
-    const arena = ArenaInitializer.create(engine, world, sceneComponent);
-    scene.add(arena);
+    await ArenaInitializer.create(engine, world, sceneComponent);
 
     await Level1Initializer.create(engine, scene, world);
 }

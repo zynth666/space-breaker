@@ -22,7 +22,7 @@ export default class RendererInitializer {
         engine.addComponent(renderEntity, rendererComponent);
         engine.addComponent(renderEntity, scene);
         engine.addComponent(renderEntity, cameraComponent);
-        new OrbitControls(cameraComponent.three, rendererComponent.three.domElement);
+        //new OrbitControls(cameraComponent.three, rendererComponent.three.domElement);
         return renderEntity;
     }
 }
