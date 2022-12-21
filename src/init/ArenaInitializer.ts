@@ -28,13 +28,13 @@ export default class ArenaInitializer {
         const horizontalSize: TripleTuple<number> = [1, 1, 57];
         const verticalSize: TripleTuple<number> = [45, 1, 1];
 
-        this.createArenaWallCollider(engine, world, scene, arenaLeftPosition, horizontalSize);
-        this.createArenaWallCollider(engine, world, scene, arenaRightPosition, horizontalSize);
-        this.createArenaWallCollider(engine, world, scene, arenaTopPosition, verticalSize);
-        this.createArenaWallCollider(engine, world, scene, arenaBottomPosition, verticalSize);
+        this.createArenaWallCollider(engine, world, arenaLeftPosition, horizontalSize);
+        this.createArenaWallCollider(engine, world, arenaRightPosition, horizontalSize);
+        this.createArenaWallCollider(engine, world, arenaTopPosition, verticalSize);
+        this.createArenaWallCollider(engine, world, arenaBottomPosition, verticalSize);
     }
 
-    private static createArenaWallCollider(engine: Engine, world: World, scene: Scene, position: TripleTuple<number>, size: TripleTuple<number>) {
+    private static createArenaWallCollider(engine: Engine, world: World, position: TripleTuple<number>, size: TripleTuple<number>) {
         const collider = new CuboidCollider(...size, world);
         collider.value.setTranslation(new THREE.Vector3(...position));
         const colliderEntity = engine.addEntity();
