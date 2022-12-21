@@ -11,7 +11,7 @@ import Position from "../component/Position";
 import KinematicPositionBasedRigidBody from "../component/KinematicPositionBasedRigidBody";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import GLTFInitializer from "./GLTFInitializer";
-import spaceshipUrl from "../assets/gltf/SpaceshipQuentin.gltf";
+import spaceshipUrl from "../assets/gltf/Spaceship_Quentin.gltf";
 import GLTFModel from "../component/GLTFModel";
 import { Mesh } from "three";
 import Sound from "../component/Sound";
