@@ -41,7 +41,7 @@ export default class BallInitializer {
         engine.addComponent(ball, rigidBody);
 
         const collider = new BallCollider(0.75, world, rigidBody.value);
-        collider.value.setRestitution(1.05);
+        collider.value.setRestitution(.95);
         collider.value.setRestitutionCombineRule(RAPIER.CoefficientCombineRule.Max);
         collider.value.setActiveEvents(RAPIER.ActiveEvents.COLLISION_EVENTS);
         engine.addComponent(ball, collider);
