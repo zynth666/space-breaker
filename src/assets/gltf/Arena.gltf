@@ -41,7 +41,7 @@
                     "index" : 0
                 },
                 "metallicFactor" : 0,
-                "roughnessFactor" : 0.02909090928733349
+                "roughnessFactor" : 0.4981818199157715
             }
         },
         {
@@ -57,7 +57,8 @@
                 "baseColorTexture" : {
                     "index" : 1
                 },
-                "roughnessFactor" : 0.2054545283317566
+                "metallicFactor" : 0.5054545998573303,
+                "roughnessFactor" : 0.43454545736312866
             }
         }
     ],
