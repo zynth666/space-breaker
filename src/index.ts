@@ -1,5 +1,6 @@
 import "./assets/sass/styles.scss";
 import Engine from "./engine/Engine";
+import * as THREE from "three";
 
 import RenderSystem from "./system/RenderSystem";
 import RendererInitializer from "./init/RendererInitializer";
@@ -23,11 +24,9 @@ import HitSoundSystem from "./system/HitSoundSystem";
 import CharacterSoundSystem from "./system/CharacterSoundSystem";
 import CharacterAnimationSystem from "./system/CharacterAnimationSystem";
 import DirectionalLightInitializer from "./init/DirectionalLightInitializer";
-import RectangularLightInitializer from "./init/RectangularLightInitializer";
 import AmbientLightInitializer from "./init/AmbientLightInitializer";
 import titleTrackUrl from "./assets/audio/quentins-quest-theme-v2-drums.wav";
-import * as THREE from "three";
-import Mesh from "./component/Mesh";
+import SpaceDustInitializer from "./init/SpaceDustInitializer";
 
 const engine = new Engine();
 let physicsWorld: World;
@@ -83,23 +82,13 @@ async function init(world: World) {
     engine.addComponent(worldEntity, new PhysicsWorld(world));
     engine.addComponent(worldEntity, sceneComponent);
 
-    /* const dustGeometry = new THREE.DodecahedronGeometry(1, 0);
-    const dustMaterial = new THREE.MeshPhongMaterial({ color: 0x010101 });
-    const mesh = new Mesh(dustGeometry, dustMaterial);
-    mesh.three.position.set(0, 0, 0);
-
-    scene.add(mesh.three); */
-
     AmbientLightInitializer.create(scene);
     DirectionalLightInitializer.create(scene);
-    //RectangularLightInitializer.create(scene);
+    SpaceDustInitializer.create(engine, scene);
 
     const player = await PlayerInitializer.create(engine, scene, world);
-
     BallInitializer.create(engine, scene, world, player);
-
     await ArenaInitializer.create(engine, world, sceneComponent);
-
     await Level1Initializer.create(engine, scene, world);
 }
 
