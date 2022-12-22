@@ -9,13 +9,13 @@ import { Entity } from "../entity/types";
 import System from "./System";
 
 export default class AttachedBallMovementSystem extends System {
-    public requiredComponents = new Set<Function>([Mesh, DynamicRigidBody, BallCollider, Position, Fireable, ParentEntity]);
+    public requiredComponents = new Set<Function>([GLTFModel, DynamicRigidBody, BallCollider, Position, Fireable, ParentEntity]);
 
     public update(entities: Set<Entity>): void {
         entities.forEach(entity => {
             const entityContainer = this.engine.getComponents(entity);
             const rigidBody = entityContainer.get(DynamicRigidBody);
-            const mesh = entityContainer.get(Mesh).three;
+            const mesh = entityContainer.get(GLTFModel).three.scene;
             const playerEntity = entityContainer.get(ParentEntity).value;
             const player = this.engine.getComponents(playerEntity).get(GLTFModel).three.scene;
             const position = entityContainer.get(Position);
