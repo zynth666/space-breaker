@@ -17,7 +17,7 @@ export default class FireBallSystem extends System {
         entities.forEach(entity => {
             const entityContainer = this.engine.getComponents(entity);
             const fireable = entityContainer.get(Fireable);
-            const mesh = entityContainer.get(Mesh).three;
+            const mesh = entityContainer.get(GLTFModel).three.scene;
             const rigidBody = entityContainer.get(DynamicRigidBody);
             const player = entityContainer.get(ParentEntity);
             const playerComponents = this.engine.getComponents(player.value);

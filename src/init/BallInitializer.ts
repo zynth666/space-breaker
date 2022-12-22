@@ -14,17 +14,24 @@ import { Entity } from "../entity/types";
 import { TripleTuple } from "../types";
 import ballHitUrl from "../assets/audio/ball-hit.wav";
 import Hit from "../component/Hit";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import GLTFInitializer from "./GLTFInitializer";
+import astroidUrl from "../assets/gltf/Asteroid.gltf";
 
 export default class BallInitializer {
-    public static create(engine: Engine, scene: THREE.Scene, world: World, player: Entity): Entity {
-        const ball = engine.addEntity();
+    public static async create(engine: Engine, scene: THREE.Scene, world: World, player: Entity): Promise<Entity> {
         const playerContainer = engine.getComponents(player);
         const playerScene = playerContainer.get(GLTFModel).three.scene;
 
-        const geometry = new THREE.SphereGeometry(0.75);
+        const loader = new GLTFLoader();
+        const ball = await GLTFInitializer.create(engine, loader, astroidUrl);
+        const mesh = engine.getComponents(ball).get(GLTFModel).three.scene.getObjectByName("Scene") as THREE.Mesh;
+        mesh.scale.set(0.2, 0.2, 0.2);
+
+        /* const geometry = new THREE.SphereGeometry(0.75);
         const material = new THREE.MeshNormalMaterial();
         const mesh = new Mesh(geometry, material);
-        engine.addComponent(ball, mesh);
+        engine.addComponent(ball, mesh); */
 
         const ballFireable = new Fireable();
         engine.addComponent(ball, ballFireable);
@@ -58,7 +65,7 @@ export default class BallInitializer {
         const hit = new Hit();
         engine.addComponent(ball, hit);
 
-        scene.add(mesh.three);
+        scene.add(mesh);
 
         return ball;
     }
