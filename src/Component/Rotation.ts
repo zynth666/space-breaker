@@ -2,13 +2,11 @@ import * as THREE from "three";
 import Component from "./Component";
 
 export default class Rotation extends Component {
-    axis: THREE.Vector3;
-    velocity: number;
+    three: THREE.Quaternion;
 
-    constructor(axis: THREE.Vector3, velocity: number) {
+    constructor(quaternion: THREE.Quaternion) {
         super();
 
-        this.axis = axis.normalize();
-        this.velocity = velocity;
+        this.three = quaternion;
     }
 }

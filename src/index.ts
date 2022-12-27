@@ -27,6 +27,7 @@ import DirectionalLightInitializer from "./init/DirectionalLightInitializer";
 import AmbientLightInitializer from "./init/AmbientLightInitializer";
 import titleTrackUrl from "./assets/audio/quentins-quest-theme-v2-drums.wav";
 import SpaceDustInitializer from "./init/SpaceDustInitializer";
+import DustAnimationSystem from "./system/DustAnimationSystem";
 
 const engine = new Engine();
 let physicsWorld: World;
@@ -61,6 +62,7 @@ async function init(world: World) {
     const hitSoundSystem = new HitSoundSystem();
     const characterSoundSystem = new CharacterSoundSystem();
     const characterAnimationSystem = new CharacterAnimationSystem();
+    const dustAnimationSystem = new DustAnimationSystem();
 
     engine.addSystem(renderSystem);
     engine.addSystem(controllerSystem);
@@ -73,6 +75,7 @@ async function init(world: World) {
     engine.addSystem(hitSoundSystem);
     engine.addSystem(characterSoundSystem);
     engine.addSystem(characterAnimationSystem);
+    engine.addSystem(dustAnimationSystem);
 
     const renderer = RendererInitializer.create(engine);
     const sceneComponent = engine.getComponents(renderer).get(Scene);
