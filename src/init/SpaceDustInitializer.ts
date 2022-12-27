@@ -43,7 +43,7 @@ export default class SpaceDustInitializer {
                     dummy.updateMatrix();
                     mesh.three.setMatrixAt(index++, dummy.matrix);
 
-                    if (index % 500 === 0) {
+                    if (index % 100 === 0) {
                         this.addPointLight(scene, engine, dummy.position);
                     }
 
@@ -75,7 +75,7 @@ export default class SpaceDustInitializer {
 
     private static addPointLight(scene: THREE.Scene, engine: Engine, position: THREE.Vector3) {
         const entity = engine.addEntity();
-        const pointLight = new PointLight(this.getRandomColor(), 1, 750, 2);
+        const pointLight = new PointLight(this.getRandomColor(), 1, 250, 2);
         pointLight.three.position.copy(position);
         scene.add(pointLight.three);
         engine.addComponent(entity, pointLight);
