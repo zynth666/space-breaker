@@ -2,7 +2,6 @@ import * as THREE from "three";
 import BallCollider from "../component/BallCollider";
 import DynamicRigidBody from "../component/DynamicRigidBody";
 import GLTFModel from "../component/GLTFModel";
-import Mesh from "../component/Mesh";
 import Position from "../component/Position";
 import Velocity from "../component/Velocity";
 import { Entity } from "../entity/types";

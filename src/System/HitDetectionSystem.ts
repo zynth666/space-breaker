@@ -30,8 +30,8 @@ export default class HitDetectionSystem extends System {
 
                 console.log("HitDetectionSystem: Hit detected between entities: " + entity1 + " and " + entity2);
 
-                this.setHitOnEntity(entity1);
-                this.setHitOnEntity(entity2);
+                this.setHitOnEntity(entity1, entity2);
+                this.setHitOnEntity(entity2, entity1);
 
                 this.removeEntityIfBreakable(entity1, world, scene);
                 this.removeEntityIfBreakable(entity2, world, scene);
@@ -59,15 +59,19 @@ export default class HitDetectionSystem extends System {
         return -1;
     }
 
-    private setHitOnEntity(entity: Entity): void {
+    private setHitOnEntity(entity: Entity, hitEntity: Entity): void {
         if (entity === -1) {
             return;
         }
 
         const components = this.engine.getComponents(entity);
-        if (components.has(Hit)) {
-            components.get(Hit).value = true;
+        if (!components.has(Hit)) {
+            return;
         }
+
+        const hit = components.get(Hit);
+        hit.value = true;
+        hit.lastHitEntity = hitEntity;
     }
 
     private removeEntityIfBreakable(entity: Entity, world: World, scene: THREE.Scene): void {

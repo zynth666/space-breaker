@@ -44,7 +44,7 @@ export default class PlayerInitializer {
 
         const characterController = new CharacterController(world);
         const playerCollider = new CuboidCollider(...dimensions, world, rigidBody.value);
-        playerCollider.value.setRestitution(5);
+        playerCollider.value.setRestitution(4);
         playerCollider.value.setRestitutionCombineRule(RAPIER.CoefficientCombineRule.Max);
 
         engine.addComponent(playerEntity, playerVelocity);

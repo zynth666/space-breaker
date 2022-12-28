@@ -36,7 +36,7 @@ let lastRender = 0;
 let scene: THREE.Scene;
 
 import('@dimforge/rapier3d').then(async RAPIER => {
-    const world = new RAPIER.World({ x: 0.0, y: 0.0, z: .5 });
+    const world = new RAPIER.World({ x: 0.0, y: 0.0, z: 1.5 });
     physicsWorld = world;
     await init(world);
     eventQueue = addEventQueueEntity();
@@ -49,6 +49,23 @@ async function init(world: World) {
     titleTrack.addEventListener("canplaythrough", () => {
         titleTrack.play();
     }); */
+
+    const renderer = RendererInitializer.create(engine);
+    const sceneComponent = engine.getComponents(renderer).get(Scene);
+    scene = engine.getComponents(renderer).get(Scene).three;
+
+    const worldEntity = engine.addEntity();
+    engine.addComponent(worldEntity, new PhysicsWorld(world));
+    engine.addComponent(worldEntity, sceneComponent);
+
+    AmbientLightInitializer.create(scene);
+    DirectionalLightInitializer.create(scene);
+    SpaceDustInitializer.create(engine, scene);
+
+    const player = await PlayerInitializer.create(engine, scene, world);
+    BallInitializer.create(engine, scene, world, player);
+    await ArenaInitializer.create(engine, world, sceneComponent);
+    await Level1Initializer.create(engine, scene, world);
 
     KeyboardControls.init();
     const renderSystem = new RenderSystem();
@@ -76,23 +93,6 @@ async function init(world: World) {
     engine.addSystem(characterSoundSystem);
     engine.addSystem(characterAnimationSystem);
     engine.addSystem(dustAnimationSystem);
-
-    const renderer = RendererInitializer.create(engine);
-    const sceneComponent = engine.getComponents(renderer).get(Scene);
-    scene = engine.getComponents(renderer).get(Scene).three;
-
-    const worldEntity = engine.addEntity();
-    engine.addComponent(worldEntity, new PhysicsWorld(world));
-    engine.addComponent(worldEntity, sceneComponent);
-
-    AmbientLightInitializer.create(scene);
-    DirectionalLightInitializer.create(scene);
-    SpaceDustInitializer.create(engine, scene);
-
-    const player = await PlayerInitializer.create(engine, scene, world);
-    BallInitializer.create(engine, scene, world, player);
-    await ArenaInitializer.create(engine, world, sceneComponent);
-    await Level1Initializer.create(engine, scene, world);
 }
 
 function renderFrame(timestamp: number) {

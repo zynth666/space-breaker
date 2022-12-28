@@ -28,11 +28,6 @@ export default class BallInitializer {
         const mesh = engine.getComponents(ball).get(GLTFModel).three.scene.getObjectByName("Scene") as THREE.Mesh;
         mesh.scale.set(0.2, 0.2, 0.2);
 
-        /* const geometry = new THREE.SphereGeometry(0.75);
-        const material = new THREE.MeshNormalMaterial();
-        const mesh = new Mesh(geometry, material);
-        engine.addComponent(ball, mesh); */
-
         const ballFireable = new Fireable();
         engine.addComponent(ball, ballFireable);
 
@@ -48,7 +43,7 @@ export default class BallInitializer {
         engine.addComponent(ball, rigidBody);
 
         const collider = new BallCollider(0.75, world, rigidBody.value);
-        collider.value.setRestitution(.75);
+        collider.value.setRestitution(1.0);
         collider.value.setRestitutionCombineRule(RAPIER.CoefficientCombineRule.Max);
         collider.value.setActiveEvents(RAPIER.ActiveEvents.COLLISION_EVENTS);
         engine.addComponent(ball, collider);
