@@ -23,13 +23,13 @@ export default class Level1Initializer {
         const geometry = cube.geometry;
         const material = cube.material as THREE.Material;
 
-        const count = 70;
+        const count = 50;
         const offsetX = 18;
         const offsetZ = -20;
         const spacing = 4;
 
         for (let i = 0; i < count / 10; i++) {
-            for (let j = 0; j < count / 7; j++) {
+            for (let j = 0; j < count / 5; j++) {
                 const entity = engine.addEntity();
                 const cube = new MeshComponent(geometry, material);
                 engine.addComponent(entity, cube);

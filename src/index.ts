@@ -36,7 +36,7 @@ let lastRender = 0;
 let scene: THREE.Scene;
 
 import('@dimforge/rapier3d').then(async RAPIER => {
-    const world = new RAPIER.World({ x: 0.0, y: 0.0, z: 1.5 });
+    const world = new RAPIER.World({ x: 0.0, y: 0.0, z: 5 });
     physicsWorld = world;
     await init(world);
     eventQueue = addEventQueueEntity();
@@ -73,26 +73,26 @@ async function init(world: World) {
     const fireBallSystem = new FireBallSystem();
     const characterMovementSystem = new CharacterMovementSystem();
     const attachedBallMovementSystem = new AttachedBallMovementSystem();
-    const ballMovementSystem = new BallMovementSystem();
-    const colliderDebugSystem = new ColliderDebugSystem();
     const hitDetectionSystem = new HitDetectionSystem();
-    const hitSoundSystem = new HitSoundSystem();
+    const ballMovementSystem = new BallMovementSystem();
     const characterSoundSystem = new CharacterSoundSystem();
     const characterAnimationSystem = new CharacterAnimationSystem();
     const dustAnimationSystem = new DustAnimationSystem();
+    const hitSoundSystem = new HitSoundSystem();
+    const colliderDebugSystem = new ColliderDebugSystem();
 
     engine.addSystem(renderSystem);
     engine.addSystem(controllerSystem);
     engine.addSystem(fireBallSystem);
     engine.addSystem(characterMovementSystem);
     engine.addSystem(attachedBallMovementSystem);
-    engine.addSystem(ballMovementSystem);
     engine.addSystem(hitDetectionSystem);
-    engine.addSystem(colliderDebugSystem);
-    engine.addSystem(hitSoundSystem);
+    engine.addSystem(ballMovementSystem);
     engine.addSystem(characterSoundSystem);
     engine.addSystem(characterAnimationSystem);
     engine.addSystem(dustAnimationSystem);
+    engine.addSystem(hitSoundSystem);
+    engine.addSystem(colliderDebugSystem);
 }
 
 function renderFrame(timestamp: number) {

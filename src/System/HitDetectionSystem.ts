@@ -28,8 +28,6 @@ export default class HitDetectionSystem extends System {
                 const entity1 = this.getEntityByColliderHandle(handle1);
                 const entity2 = this.getEntityByColliderHandle(handle2);
 
-                console.log("HitDetectionSystem: Hit detected between entities: " + entity1 + " and " + entity2);
-
                 this.setHitOnEntity(entity1, entity2);
                 this.setHitOnEntity(entity2, entity1);
 
