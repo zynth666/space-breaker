@@ -4,7 +4,7 @@ import * as THREE from "three";
 
 import RenderSystem from "./system/RenderSystem";
 import RendererInitializer from "./init/RendererInitializer";
-import ControllerSystem from "./system/CharacterControllerSystem";
+import CharacterControllerSystem from "./system/CharacterControllerSystem";
 import CharacterMovementSystem from "./system/CharacterMovementSystem";
 import PlayerInitializer from "./init/PlayerInitializer";
 import Level1Initializer from "./init/Level1Initializer";
@@ -28,6 +28,7 @@ import AmbientLightInitializer from "./init/AmbientLightInitializer";
 import titleTrackUrl from "./assets/audio/quentins-quest-theme-v2-drums.wav";
 import SpaceDustInitializer from "./init/SpaceDustInitializer";
 import DustAnimationSystem from "./system/DustAnimationSystem";
+import WinGameSystem from "./system/WinGameSystem";
 
 const engine = new Engine();
 let physicsWorld: World;
@@ -36,7 +37,7 @@ let lastRender = 0;
 let scene: THREE.Scene;
 
 import('@dimforge/rapier3d').then(async RAPIER => {
-    const world = new RAPIER.World({ x: 0.0, y: 0.0, z: 5 });
+    const world = new RAPIER.World({ x: 0.0, y: 0.0, z: 2.5 });
     physicsWorld = world;
     await init(world);
     eventQueue = addEventQueueEntity();
@@ -69,7 +70,7 @@ async function init(world: World) {
 
     KeyboardControls.init();
     const renderSystem = new RenderSystem();
-    const controllerSystem = new ControllerSystem();
+    const characterControllerSystem = new CharacterControllerSystem();
     const fireBallSystem = new FireBallSystem();
     const characterMovementSystem = new CharacterMovementSystem();
     const attachedBallMovementSystem = new AttachedBallMovementSystem();
@@ -79,10 +80,11 @@ async function init(world: World) {
     const characterAnimationSystem = new CharacterAnimationSystem();
     const dustAnimationSystem = new DustAnimationSystem();
     const hitSoundSystem = new HitSoundSystem();
+    const winGameSystem = new WinGameSystem();
     const colliderDebugSystem = new ColliderDebugSystem();
 
     engine.addSystem(renderSystem);
-    engine.addSystem(controllerSystem);
+    engine.addSystem(characterControllerSystem);
     engine.addSystem(fireBallSystem);
     engine.addSystem(characterMovementSystem);
     engine.addSystem(attachedBallMovementSystem);
@@ -92,7 +94,8 @@ async function init(world: World) {
     engine.addSystem(characterAnimationSystem);
     engine.addSystem(dustAnimationSystem);
     engine.addSystem(hitSoundSystem);
-    engine.addSystem(colliderDebugSystem);
+    engine.addSystem(winGameSystem);
+    //engine.addSystem(colliderDebugSystem);
 }
 
 function renderFrame(timestamp: number) {

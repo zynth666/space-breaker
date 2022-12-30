@@ -15,7 +15,7 @@ export default class SpaceDustInitializer {
         const dummy = new THREE.Object3D();
 
         const offsetX = -100;
-        const offsetY = -10;
+        const offsetY = -100;
         const offsetZ = -100;
         const spacing = 100;
         let index = 0;
@@ -47,7 +47,7 @@ export default class SpaceDustInitializer {
                         this.addPointLight(scene, engine, dummy.position);
                     }
 
-                    let time = Random.range(0, 100);
+                    let time = Random.range(1, 100);
                     let speed = Random.range(0.01, 0.015) / 2;
 
                     particleInformation.set(index, { time, speed });
@@ -66,7 +66,7 @@ export default class SpaceDustInitializer {
     }
 
     private static isInArena(x: number, y: number, z: number): boolean {
-        return x > -40 && x < 40 && y > -100 && y < 100 && z > -50 && z < 50;
+        return x > -40 && x < 40 && y > -10 && y < 100 && z > -50 && z < 50;
     }
 
     private static getRandomColor(): number {
@@ -75,7 +75,7 @@ export default class SpaceDustInitializer {
 
     private static addPointLight(scene: THREE.Scene, engine: Engine, position: THREE.Vector3) {
         const entity = engine.addEntity();
-        const pointLight = new PointLight(this.getRandomColor(), 1, 250, 2);
+        const pointLight = new PointLight(this.getRandomColor(), 1, position.length() * 10, 2);
         pointLight.three.position.copy(position);
         scene.add(pointLight.three);
         engine.addComponent(entity, pointLight);

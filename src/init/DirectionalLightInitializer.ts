@@ -8,7 +8,7 @@ export default class DirectionalLightInitializer {
 
         scene.add(light.three);
 
-        const lightHelper = new THREE.DirectionalLightHelper(light.three, 5);
-        scene.add(lightHelper);
+        /* const lightHelper = new THREE.DirectionalLightHelper(light.three, 5);
+        scene.add(lightHelper); */
     }
 }

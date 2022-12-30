@@ -17,6 +17,7 @@ import Hit from "../component/Hit";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import GLTFInitializer from "./GLTFInitializer";
 import astroidUrl from "../assets/gltf/Asteroid.gltf";
+import WinGameDetector from "../component/WinGameDetector";
 
 export default class BallInitializer {
     public static async create(engine: Engine, scene: THREE.Scene, world: World, player: Entity): Promise<Entity> {
@@ -43,7 +44,7 @@ export default class BallInitializer {
         engine.addComponent(ball, rigidBody);
 
         const collider = new BallCollider(0.75, world, rigidBody.value);
-        collider.value.setRestitution(1.0);
+        collider.value.setRestitution(1.5);
         collider.value.setRestitutionCombineRule(RAPIER.CoefficientCombineRule.Max);
         collider.value.setActiveEvents(RAPIER.ActiveEvents.COLLISION_EVENTS);
         engine.addComponent(ball, collider);
@@ -59,6 +60,9 @@ export default class BallInitializer {
 
         const hit = new Hit();
         engine.addComponent(ball, hit);
+
+        const winGameDetector = new WinGameDetector();
+        engine.addComponent(ball, winGameDetector);
 
         scene.add(mesh);
 

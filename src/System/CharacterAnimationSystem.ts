@@ -4,11 +4,12 @@ import GLTFModel from "../component/GLTFModel";
 import { Entity } from "../entity/types";
 import System from "./System";
 import Animation from "../component/Animation";
+import WinGameDetector from "../component/WinGameDetector";
 
 export default class CharacterAnimationSystem extends System {
     public lastAnimationAction: THREE.AnimationAction;
 
-    public requiredComponents = new Set<Function>([AnimationMixer, GLTFModel, Animation]);
+    public requiredComponents = new Set<Function>([AnimationMixer, GLTFModel, Animation, WinGameDetector]);
 
     public update(entities: Set<Entity>): void {
         entities.forEach(entity => {
@@ -16,8 +17,13 @@ export default class CharacterAnimationSystem extends System {
             const mixer = components.get(AnimationMixer);
             const model = components.get(GLTFModel).three;
             const animation = components.get(Animation);
+            const winGameDetector = components.get(WinGameDetector);
 
             mixer.three.update(this.engine.getDeltaTime() * animation.timeScale);
+
+            if (winGameDetector.value) {
+                animation.name = "6 Win";
+            }
 
             if (this.lastAnimationAction && this.lastAnimationAction.getClip().name === animation.name) {
                 return;
