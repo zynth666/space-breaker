@@ -95,7 +95,7 @@ async function init(world: World) {
     engine.addSystem(dustAnimationSystem);
     engine.addSystem(hitSoundSystem);
     engine.addSystem(winGameSystem);
-    //engine.addSystem(colliderDebugSystem);
+    engine.addSystem(colliderDebugSystem);
 }
 
 function renderFrame(timestamp: number) {
