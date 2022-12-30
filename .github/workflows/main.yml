@@ -9,12 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🚚 Get latest code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Use Node.js 16
-      uses: actions/setup-node@v2-beta
+      uses: actions/setup-node@v3
       with:
-        node-version: '16'
+        node-version: 16
 
     - name: 🔨 Build Project
       run: |
@@ -28,7 +28,7 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.0
       with:
-        server: ''
+        server: '185.243.11.81'
         username: 'sysuser_1'
         password: ${{ secrets.password }}
         protocol: ftps
