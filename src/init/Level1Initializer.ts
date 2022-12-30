@@ -23,6 +23,10 @@ export default class Level1Initializer {
         const geometry = cube.geometry;
         const material = cube.material as THREE.Material;
 
+        this.createCubes(engine, scene, world, geometry, material);
+    }
+
+    private static createCubes(engine: Engine, scene: THREE.Scene, world: World, geometry: THREE.BufferGeometry, material: THREE.Material) {
         const count = 50;
         const offsetX = 18;
         const offsetZ = -20;
