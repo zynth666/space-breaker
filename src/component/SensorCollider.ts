@@ -3,6 +3,7 @@ import Component from "./Component";
 
 export default class SensorCollider extends Component {
     public value: Collider;
+    public world: World;
 
     constructor(width: number, height: number, depth: number, world: World, rigidBody?: RigidBody) {
         super();
@@ -10,6 +11,11 @@ export default class SensorCollider extends Component {
         const collider = ColliderDesc.cuboid(width / 2, height / 2, depth / 2);
         collider.setSensor(true);
 
+        this.world = world;
         this.value = world.createCollider(collider, rigidBody);
+    }
+
+    destroy(): void {
+        this.world.removeCollider(this.value, true);
     }
 }

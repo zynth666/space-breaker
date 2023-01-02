@@ -18,6 +18,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import GLTFInitializer from "./GLTFInitializer";
 import astroidUrl from "../assets/gltf/Asteroid.gltf";
 import WinGameDetector from "../component/WinGameDetector";
+import LoseGameDetector from "../component/LoseGameDetector";
 
 export default class BallInitializer {
     public static async create(engine: Engine, scene: THREE.Scene, world: World, player: Entity): Promise<Entity> {
@@ -63,6 +64,9 @@ export default class BallInitializer {
 
         const winGameDetector = new WinGameDetector();
         engine.addComponent(ball, winGameDetector);
+
+        const loseGameDetector = new LoseGameDetector();
+        engine.addComponent(ball, loseGameDetector);
 
         scene.add(mesh);
 

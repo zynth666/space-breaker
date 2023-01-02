@@ -31,7 +31,7 @@ export default class Level1Initializer {
 
     private static createLoseZone(engine: Engine, scene: THREE.Scene, world: World) {
         const entity = engine.addEntity();
-        const dimensions: TripleTuple<number> = [43, .1, .1];
+        const dimensions: TripleTuple<number> = [43, 1, .1];
         const position: TripleTuple<number> = [0, -1, 17.5];
 
         const geometry = new THREE.BoxGeometry(...dimensions);
@@ -45,6 +45,7 @@ export default class Level1Initializer {
         const sensor = new SensorCollider(...dimensions, world);
         sensor.value.setTranslation(new THREE.Vector3(...position));
         engine.addComponent(entity, sensor);
+        engine.addComponent(entity, new Hit());
     }
 
     private static createCubes(engine: Engine, scene: THREE.Scene, world: World, geometry: THREE.BufferGeometry, material: THREE.Material) {

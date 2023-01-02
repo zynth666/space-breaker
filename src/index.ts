@@ -29,6 +29,7 @@ import titleTrackUrl from "./assets/audio/quentins-quest-theme-v2-drums.wav";
 import SpaceDustInitializer from "./init/SpaceDustInitializer";
 import DustAnimationSystem from "./system/DustAnimationSystem";
 import WinGameSystem from "./system/WinGameSystem";
+import LoseGameSystem from "./system/LoseGameSystem";
 
 const engine = new Engine();
 let physicsWorld: World;
@@ -80,6 +81,7 @@ async function init(world: World) {
     const characterAnimationSystem = new CharacterAnimationSystem();
     const dustAnimationSystem = new DustAnimationSystem();
     const hitSoundSystem = new HitSoundSystem();
+    const loseGameSystem = new LoseGameSystem();
     const winGameSystem = new WinGameSystem();
     const colliderDebugSystem = new ColliderDebugSystem();
 
@@ -94,8 +96,9 @@ async function init(world: World) {
     engine.addSystem(characterAnimationSystem);
     engine.addSystem(dustAnimationSystem);
     engine.addSystem(hitSoundSystem);
+    engine.addSystem(loseGameSystem);
     engine.addSystem(winGameSystem);
-    engine.addSystem(colliderDebugSystem);
+    //engine.addSystem(colliderDebugSystem);
 }
 
 function renderFrame(timestamp: number) {

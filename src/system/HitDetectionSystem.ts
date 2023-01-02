@@ -7,6 +7,7 @@ import Mesh from "../component/Mesh";
 import PhysicsWorld from "../component/PhysicsWorld";
 import RapierEventQueue from "../component/RapierEventQueue";
 import Scene from "../component/Scene";
+import SensorCollider from "../component/SensorCollider";
 import { Entity } from "../entity/types";
 import System from "./System";
 
@@ -47,6 +48,12 @@ export default class HitDetectionSystem extends System {
                 }
             } else if (container.has(BallCollider)) {
                 const collider = container.get(BallCollider).value;
+
+                if (collider.handle === handle) {
+                    return entity;
+                }
+            } else if (container.has(SensorCollider)) {
+                const collider = container.get(SensorCollider).value;
 
                 if (collider.handle === handle) {
                     return entity;
