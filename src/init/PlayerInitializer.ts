@@ -19,6 +19,7 @@ import swivelUrl from "../assets/audio/swivel-long.wav";
 import AnimationMixer from "../component/AnimationMixer";
 import Animation from "../component/Animation";
 import WinGameDetector from "../component/WinGameDetector";
+import LoseGameDetector from "../component/LoseGameDetector";
 
 export default class PlayerInitializer {
     public static async create(engine: Engine, scene: THREE.Scene, world: World): Promise<Entity> {
@@ -58,6 +59,7 @@ export default class PlayerInitializer {
         engine.addComponent(playerEntity, new AnimationMixer(mesh));
         engine.addComponent(playerEntity, new Animation("1 Idle", 0.001));
         engine.addComponent(playerEntity, new WinGameDetector());
+        engine.addComponent(playerEntity, new LoseGameDetector());
 
         return playerEntity;
     }

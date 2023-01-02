@@ -79,6 +79,6 @@ export default class SpaceDustInitializer {
         pointLight.three.position.copy(position);
         scene.add(pointLight.three);
         engine.addComponent(entity, pointLight);
-        scene.add(new THREE.PointLightHelper(pointLight.three, 5));
+        //scene.add(new THREE.PointLightHelper(pointLight.three, 5));
     }
 }

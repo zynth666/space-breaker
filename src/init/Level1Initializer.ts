@@ -13,6 +13,8 @@ import Breakable from "../component/Breakable";
 import Hit from "../component/Hit";
 import breakCubeUrl from "../assets/audio/break-cube.wav";
 import Sound from "../component/Sound";
+import SensorCollider from "../component/SensorCollider";
+import { TripleTuple } from "../types";
 
 export default class Level1Initializer {
     public static async create(engine: Engine, scene: THREE.Scene, world: World) {
@@ -24,6 +26,26 @@ export default class Level1Initializer {
         const material = cube.material as THREE.Material;
 
         this.createCubes(engine, scene, world, geometry, material);
+        this.createLoseZone(engine, scene, world);
+    }
+
+    private static createLoseZone(engine: Engine, scene: THREE.Scene, world: World) {
+        const entity = engine.addEntity();
+        const dimensions: TripleTuple<number> = [43, 1, .1];
+        const position: TripleTuple<number> = [0, -1, 17.5];
+
+        const geometry = new THREE.BoxGeometry(...dimensions);
+        const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        const cube = new MeshComponent(geometry, material);
+
+        engine.addComponent(entity, cube);
+        cube.three.position.set(...position);
+        scene.add(cube.three);
+
+        const sensor = new SensorCollider(...dimensions, world);
+        sensor.value.setTranslation(new THREE.Vector3(...position));
+        engine.addComponent(entity, sensor);
+        engine.addComponent(entity, new Hit());
     }
 
     private static createCubes(engine: Engine, scene: THREE.Scene, world: World, geometry: THREE.BufferGeometry, material: THREE.Material) {

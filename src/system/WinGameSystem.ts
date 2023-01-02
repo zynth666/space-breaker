@@ -2,6 +2,7 @@ import Breakable from "../component/Breakable";
 import WinGameDetector from "../component/WinGameDetector";
 import { Entity } from "../entity/types";
 import System from "./System";
+import winSoundUrl from "../assets/audio/you-win.wav"
 
 export default class WinGameSystem extends System {
     public requiredComponents = new Set<Function>([WinGameDetector]);
@@ -26,5 +27,10 @@ export default class WinGameSystem extends System {
 
             winGameDetector.value = true;
         });
+
+        const winSound = new Audio(winSoundUrl);
+        winSound.play();
+
+        this.engine.removeSystem(this);
     }
 }

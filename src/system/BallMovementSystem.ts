@@ -5,6 +5,7 @@ import DynamicRigidBody from "../component/DynamicRigidBody";
 import GLTFModel from "../component/GLTFModel";
 import Hit from "../component/Hit";
 import KinematicPositionBasedRigidBody from "../component/KinematicPositionBasedRigidBody";
+import LoseGameDetector from "../component/LoseGameDetector";
 import Position from "../component/Position";
 import Velocity from "../component/Velocity";
 import WinGameDetector from "../component/WinGameDetector";
@@ -12,20 +13,25 @@ import { Entity } from "../entity/types";
 import System from "./System";
 
 export default class BallMovementSystem extends System {
-    public requiredComponents = new Set<Function>([GLTFModel, DynamicRigidBody, BallCollider, Position, Velocity, Hit, WinGameDetector]);
+    public requiredComponents = new Set<Function>([GLTFModel, DynamicRigidBody, BallCollider, Position, Velocity, Hit, WinGameDetector, LoseGameDetector]);
 
     public update(entities: Set<Entity>): void {
         entities.forEach(entity => {
             const entityContainer = this.engine.getComponents(entity);
+            const collider = entityContainer.get(BallCollider);
 
             const winGameDetector = entityContainer.get(WinGameDetector);
-            if (winGameDetector.value) {
+            const loseGameDetector = entityContainer.get(LoseGameDetector);
+            const mesh = entityContainer.get(GLTFModel).three.scene;
+            const rigidBody = entityContainer.get(DynamicRigidBody);
+
+            if (winGameDetector.value || loseGameDetector.value) {
+                mesh.parent.remove(mesh);
+                rigidBody.destroy();
+                collider.destroy();
                 this.engine.removeEntity(entity);
                 return;
             }
-
-            const rigidBody = entityContainer.get(DynamicRigidBody);
-            const mesh = entityContainer.get(GLTFModel).three.scene;
 
             this.setMeshTranslations(mesh, rigidBody);
 
