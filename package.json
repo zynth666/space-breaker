@@ -40,7 +40,7 @@
   "dependencies": {
     "@dimforge/rapier3d": "^0.10.0",
     "canvas-sketch-util": "^1.10.0",
-    "lil-gui": "^0.17.0",
+    "lil-gui": "^0.18.1",
     "path": "^0.12.7",
     "three": "^0.148.0"
   }
